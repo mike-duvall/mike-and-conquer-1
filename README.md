@@ -1,4 +1,5 @@
 # mike-and-conquer
-Original Command and Conquer clone
+
+Clone of the Original 1995 Command and Conquer
 
 More to come.....
