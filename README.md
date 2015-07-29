@@ -1,6 +1,9 @@
 # mike-and-conquer
 
-Clone of the Original 1995 Command and Conquer
+My attempt at building a clone of the Original 1995 Command and Conquer
+
+
+Not much working yet....
 
 Requires Love 2d Game Engine: https://love2d.org/
 
