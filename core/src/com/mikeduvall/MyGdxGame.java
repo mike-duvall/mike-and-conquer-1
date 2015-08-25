@@ -8,20 +8,24 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class MyGdxGame extends ApplicationAdapter {
 	SpriteBatch batch;
-	Texture img;
-	
+	Texture redCircleTexture;
+	Texture blueCircleTexture;
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		redCircleTexture = new Texture("red-circle.png");
+		blueCircleTexture = new Texture("blue-circle.png");
 	}
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		batch.enableBlending();
 		batch.begin();
-		batch.draw(img, 0, 0);
+		batch.draw(redCircleTexture, 0, 0);
+		batch.draw(blueCircleTexture, 600, 440);
 		batch.end();
 	}
 }
