@@ -19,10 +19,13 @@ public class MikeAndConquerGame extends ApplicationAdapter {
 	int y = 100;
 	int screenHeight;
 	int screenWidth;
+	Texture miniGunnerTexture;
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+
+		miniGunnerTexture = new Texture("e1 0000.png");
 
         redPixMap = new Pixmap(24,24, Pixmap.Format.RGBA8888);
         redPixMap.setColor(Color.RED);
@@ -56,6 +59,7 @@ public class MikeAndConquerGame extends ApplicationAdapter {
 		batch.draw(redCircleTexture, 0, 0);
 		batch.draw(redCircleTexture, x, y);
 		batch.draw(blueCircleTexture, 600, 440);
+		batch.draw(miniGunnerTexture, 300, 300);
 		batch.end();
 	}
 
