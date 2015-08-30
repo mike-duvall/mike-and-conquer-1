@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class MikeAndConquerGame extends ApplicationAdapter {
@@ -20,12 +21,17 @@ public class MikeAndConquerGame extends ApplicationAdapter {
 	int screenHeight;
 	int screenWidth;
 	Texture miniGunnerTexture;
+	Sprite miniGunnerSprite;
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 
 		miniGunnerTexture = new Texture("e1 0000.png");
+		miniGunnerSprite = new Sprite(miniGunnerTexture);
+		miniGunnerSprite.setX(300);
+		miniGunnerSprite.setY(200);
+		miniGunnerSprite.setScale(5, 5);
 
         redPixMap = new Pixmap(24,24, Pixmap.Format.RGBA8888);
         redPixMap.setColor(Color.RED);
@@ -59,7 +65,7 @@ public class MikeAndConquerGame extends ApplicationAdapter {
 		batch.draw(redCircleTexture, 0, 0);
 		batch.draw(redCircleTexture, x, y);
 		batch.draw(blueCircleTexture, 600, 440);
-		batch.draw(miniGunnerTexture, 300, 300);
+		miniGunnerSprite.draw(batch);
 		batch.end();
 	}
 

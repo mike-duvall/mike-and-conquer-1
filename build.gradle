@@ -42,11 +42,14 @@ project(":desktop") {
 
 project(":core") {
     apply plugin: "java"
+    apply plugin: "groovy"
 
 
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+        testCompile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.1.5'
+        testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
     }
 }
 
