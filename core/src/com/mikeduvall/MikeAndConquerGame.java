@@ -44,6 +44,22 @@ public class MikeAndConquerGame extends ApplicationAdapter {
 
 	@Override
 	public void render () {
+		handleInput();
+		handleDrawing();
+	}
+
+	private void handleDrawing() {
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		batch.enableBlending();
+		batch.begin();
+		batch.draw(redCircleTexture, 0, 0);
+		batch.draw(redCircleTexture, x, y);
+		batch.draw(blueCircleTexture, 600, 440);
+		batch.end();
+	}
+
+	private void handleInput() {
 		boolean leftMouseButtonPressed = Gdx.input.isButtonPressed(Input.Buttons.LEFT);
 		boolean ifEscapeKeyIsPressed = Gdx.input.isKeyPressed(Input.Keys.ESCAPE);
 		if(ifEscapeKeyIsPressed) {
@@ -55,14 +71,5 @@ public class MikeAndConquerGame extends ApplicationAdapter {
 			x = Gdx.input.getX() - (redCircleTexture.getWidth() / 2);
 			y = screenHeight - Gdx.input.getY() - (redCircleTexture.getHeight() / 2);
 		}
-
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.enableBlending();
-		batch.begin();
-		batch.draw(redCircleTexture, 0, 0);
-		batch.draw(redCircleTexture, x, y);
-		batch.draw(blueCircleTexture, 600, 440);
-		batch.end();
 	}
 }
