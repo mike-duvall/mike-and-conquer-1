@@ -45,6 +45,11 @@ public class MikeAndConquerGame extends ApplicationAdapter {
 	@Override
 	public void render () {
 		boolean leftMouseButtonPressed = Gdx.input.isButtonPressed(Input.Buttons.LEFT);
+		boolean ifEscapeKeyIsPressed = Gdx.input.isKeyPressed(Input.Keys.ESCAPE);
+		if(ifEscapeKeyIsPressed) {
+			Gdx.app.exit();
+		}
+
 
 		if( leftMouseButtonPressed) {
 			x = Gdx.input.getX() - (redCircleTexture.getWidth() / 2);
