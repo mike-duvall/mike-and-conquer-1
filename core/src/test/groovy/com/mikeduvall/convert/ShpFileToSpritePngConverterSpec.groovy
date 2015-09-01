@@ -1,20 +1,24 @@
 package com.mikeduvall.convert
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.backends.lwjgl.LwjglFiles
 import spock.lang.Specification
 
 
 class ShpFileToSpritePngConverterSpec extends Specification {
 
-    def "xxx"() {
+    def "convert shp file to png"() {
 
         given:
-        int x =3
+        ShpFileToSpritePngConverter converter = new ShpFileToSpritePngConverter()
+        Class x = Class.forName("com.badlogic.gdx.Gdx")
+        Gdx.files = new LwjglFiles();
 
         when:
-        x = 5
+        ConversionResult conversionResult = converter.convertShpFileToSingleMiniGunnerPngFile("e1.shp")
 
         then:
-        x == 5
+        conversionResult.numberOfImages == 532
     }
 
 }
