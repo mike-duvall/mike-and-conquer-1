@@ -13,13 +13,27 @@ public class ShpFileToSpritePngConverter {
         byte[] bytes = readBytesFromFile(pathAndFileName);
         ConversionResult conversionResult = new ConversionResult();
         conversionResult.setNumberOfImages(getNumberOfImages(bytes));
+        conversionResult.setImageWidth(readImageWidth(bytes));
+        conversionResult.setImageHeight(readImageHeight(bytes));
         return conversionResult;
     }
+
+    private int readImageWidth(byte[] bytes) {
+        byte byte0 = bytes[6];
+        byte byte1 = bytes[7];
+        return (byte1 * 256) + byte0;
+    }
+
+    private int readImageHeight(byte[] bytes) {
+        byte byte0 = bytes[8];
+        byte byte1 = bytes[9];
+        return (byte1 * 256) + byte0;
+    }
+
 
     private int getNumberOfImages(byte[] bytes) {
         byte byte0 = bytes[0];
         byte byte1 = bytes[1];
-
         return (byte1 * 256) + byte0;
     }
 

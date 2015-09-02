@@ -19,8 +19,8 @@ class ShpFileToSpritePngConverterSpec extends Specification {
 
         then:
         conversionResult.numberOfImages == 532
-//        conversionResult.imageWidth == 50
-//        conversionResult.imageHeight == 39
+        conversionResult.imageWidth == 50
+        conversionResult.imageHeight == 39
     }
 
 }
