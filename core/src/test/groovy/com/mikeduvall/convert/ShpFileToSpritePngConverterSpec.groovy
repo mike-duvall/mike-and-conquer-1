@@ -11,7 +11,7 @@ class ShpFileToSpritePngConverterSpec extends Specification {
 
         given:
         ShpFileToSpritePngConverter converter = new ShpFileToSpritePngConverter()
-        Class x = Class.forName("com.badlogic.gdx.Gdx")
+        Class.forName("com.badlogic.gdx.Gdx")
         Gdx.files = new LwjglFiles();
 
         when:
