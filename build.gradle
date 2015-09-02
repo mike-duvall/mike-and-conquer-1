@@ -49,11 +49,18 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        compile 'commons-io:commons-io:2.4'
         testCompile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.1.5'
         testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
     }
+
+    test {
+        workingDir = new File('/home/mduvall/workspace/mike-and-conquer/core/assets')
+    }
+
 }
 
 tasks.eclipse.doLast {
     delete ".project"
 }
+
