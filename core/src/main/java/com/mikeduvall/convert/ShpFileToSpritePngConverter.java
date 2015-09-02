@@ -10,15 +10,7 @@ import java.io.InputStream;
 public class ShpFileToSpritePngConverter {
 
     public ConversionResult convertShpFileToSingleMiniGunnerPngFile(String pathAndFileName) {
-        FileHandle fileHandle = Gdx.files.internal(pathAndFileName);
-        InputStream is = fileHandle.read(1000);
-        byte[] bytes = null;
-        try {
-            bytes = IOUtils.toByteArray(is);
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        byte[] bytes = readBytesFromFile(pathAndFileName);
 
         byte byte0 = bytes[0];
         byte byte1 = bytes[1];
@@ -28,6 +20,23 @@ public class ShpFileToSpritePngConverter {
         ConversionResult conversionResult = new ConversionResult();
         conversionResult.setNumberOfImages(numberOfImages);
         return conversionResult;
+    }
+
+    private byte[] readBytesFromFile(String fileName) {
+        FileHandle fileHandle = Gdx.files.internal(fileName);
+        InputStream is = fileHandle.read(1000);
+        return readBytesFromInputStream(is);
+    }
+
+    private byte[] readBytesFromInputStream(InputStream is) {
+        byte[] bytes = null;
+        try {
+            bytes = IOUtils.toByteArray(is);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return bytes;
     }
 
 
