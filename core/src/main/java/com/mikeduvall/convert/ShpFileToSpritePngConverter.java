@@ -11,15 +11,16 @@ public class ShpFileToSpritePngConverter {
 
     public ConversionResult convertShpFileToSingleMiniGunnerPngFile(String pathAndFileName) {
         byte[] bytes = readBytesFromFile(pathAndFileName);
+        ConversionResult conversionResult = new ConversionResult();
+        conversionResult.setNumberOfImages(getNumberOfImages(bytes));
+        return conversionResult;
+    }
 
+    private int getNumberOfImages(byte[] bytes) {
         byte byte0 = bytes[0];
         byte byte1 = bytes[1];
 
-        int numberOfImages = (byte1 * 256) + byte0;
-
-        ConversionResult conversionResult = new ConversionResult();
-        conversionResult.setNumberOfImages(numberOfImages);
-        return conversionResult;
+        return (byte1 * 256) + byte0;
     }
 
     private byte[] readBytesFromFile(String fileName) {
