@@ -29,14 +29,12 @@ public class ShpFileToSpritePngConverter {
     }
 
     private byte[] readBytesFromInputStream(InputStream is) {
-        byte[] bytes = null;
         try {
-            bytes = IOUtils.toByteArray(is);
+            return IOUtils.toByteArray(is);
         }
         catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return bytes;
     }
 
 
