@@ -8,11 +8,14 @@ import spock.lang.Specification
 class ShpTDLoaderSpec extends Specification {
 
 
-    def "isShpTd() returns false for invalid shp file"() {
-        given:
+    def setup() {
         Class.forName("com.badlogic.gdx.Gdx")
         Gdx.files = new LwjglFiles();
 
+    }
+
+    def "isShpTd() returns false for invalid shp file"() {
+        given:
         ShpTdLoader shpTdLoader = new ShpTdLoader()
 
         when:
@@ -25,9 +28,6 @@ class ShpTDLoaderSpec extends Specification {
 
     def "isShpTd() returns true for valid shp file"() {
         given:
-        Class.forName("com.badlogic.gdx.Gdx")
-        Gdx.files = new LwjglFiles();
-
         ShpTdLoader shpTdLoader = new ShpTdLoader()
 
         when:
