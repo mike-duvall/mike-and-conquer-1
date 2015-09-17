@@ -3,6 +3,7 @@ package com.mikeduvall.convert;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.utils.LittleEndianInputStream;
 import org.apache.commons.io.IOUtils;
 
 import java.io.DataInputStream;
@@ -18,14 +19,29 @@ public class ShpTdLoader {
 
     public boolean isShpTd(String shpFileName) {
         try {
-            DataInputStream s = getDataInputStreamdFromFile(shpFileName);
+            LittleEndianInputStream s = getDataInputStreamdFromFile(shpFileName);
+
+            int start = 0;
 
             try {
-                int imageCount = s.readInt();
+                short imageCount = s.readShort();
+
+//                xxx imageCount is wrong, try guava LittleEndianDataInputStream
                 if (imageCount == 0) {
 //            s.Position = start;
                     return false;
                 }
+
+                // Last offset should point to the end of file
+                int finalOffset = start + 14 + 8 * imageCount;
+                int sizeOfStream = getSizeOfFile(shpFileName);
+                if (finalOffset > sizeOfStream) {
+//                    s.Position = start;
+                    return false;
+                }
+
+
+
             } catch (IOException e) {
 //            throw new RuntimeException("Error parsing .shp file", e);
                 return false;
@@ -40,12 +56,18 @@ public class ShpTdLoader {
 
     }
 
-    private DataInputStream getDataInputStreamdFromFile(String shpFileName) {
+    private int getSizeOfFile(String fileName) {
+        return readBytesFromFile(fileName).length;
+    }
+
+
+    private LittleEndianInputStream getDataInputStreamdFromFile(String shpFileName) {
         FileHandle fileHandle = Gdx.files.internal(shpFileName);
         InputStream is = fileHandle.read(1000);
-        DataInputStream dataInputStream = new DataInputStream(is);
+        LittleEndianInputStream dataInputStream = new LittleEndianInputStream(is);
         return dataInputStream;
     }
+
 
     private byte[] readBytesFromFile(String fileName) {
         FileHandle fileHandle = Gdx.files.internal(fileName);

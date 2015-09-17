@@ -50,6 +50,8 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile 'commons-io:commons-io:2.4'
+        compile 'com.google.guava:guava:18.0'
+
         testCompile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.1.5'
         testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
     }
