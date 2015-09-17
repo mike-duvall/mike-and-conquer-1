@@ -5,8 +5,6 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.LittleEndianInputStream;
 import org.apache.commons.io.IOUtils;
-
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -27,7 +25,7 @@ public class ShpTdLoader {
             try {
                 int imageCount = s.readUnsignedShort();
                 if (imageCount == 0) {
-//            s.Position = start;
+                    s.reset();
                     return false;
                 }
 
@@ -35,7 +33,7 @@ public class ShpTdLoader {
                 int finalOffset = start + 14 + 8 * imageCount;
                 int sizeOfStream = getSizeOfFile(shpFileName);
                 if (finalOffset > sizeOfStream) {
-//                    s.Position = start;
+                    s.reset();
                     return false;
                 }
 
@@ -44,36 +42,23 @@ public class ShpTdLoader {
                 s.mark(600000);
 
                 s.skipBytes(finalOffset);
-//                s.Position = finalOffset;
 
                 int eof = s.readInt();
-//                var eof = s.ReadUInt32();
 
                 if(eof != sizeOfStream) {
                     return false;
                 }
-//                if (eof != s.Length)
-//                {
-//                    s.Position = start;
-//                    return false;
-//                }
 
                 // Check the format flag on the first frame
                 s.reset();
                 s.mark(600000);
 
                 s.skipBytes(17);
-//                s.Position = start + 17;
 
                 int b = s.readUnsignedByte();
-//                var b = s.ReadUInt8();
 
-//                s.Position = start;
-                boolean is80 = b == 0x80;
+                s.reset();
                 return b == 0x20 || b == 0x40 || b == 0x80;
-
-
-
             } catch (IOException e) {
                 return false;
             }
@@ -82,8 +67,6 @@ public class ShpTdLoader {
             return false;
         }
 
-
-//        return true;
 
     }
 
