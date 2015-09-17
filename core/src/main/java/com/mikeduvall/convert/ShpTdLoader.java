@@ -19,14 +19,13 @@ public class ShpTdLoader {
 
     public boolean isShpTd(String shpFileName) {
         try {
-            LittleEndianInputStream s = getDataInputStreamdFromFile(shpFileName);
+            LittleEndianInputStream s = getDataInputStreamFromFile(shpFileName);
 
             int start = 0;
+            s.mark(600000);
 
             try {
                 short imageCount = s.readShort();
-
-//                xxx imageCount is wrong, try guava LittleEndianDataInputStream
                 if (imageCount == 0) {
 //            s.Position = start;
                     return false;
@@ -40,6 +39,24 @@ public class ShpTdLoader {
                     return false;
                 }
 
+
+                s.reset();
+                s.mark(600000);
+
+                s.skipBytes(finalOffset);
+//                s.Position = finalOffset;
+
+                int eof = s.readInt();
+//                var eof = s.ReadUInt32();
+
+                if(eof != sizeOfStream) {
+                    return false;
+                }
+//                if (eof != s.Length)
+//                {
+//                    s.Position = start;
+//                    return false;
+//                }
 
 
             } catch (IOException e) {
@@ -61,7 +78,7 @@ public class ShpTdLoader {
     }
 
 
-    private LittleEndianInputStream getDataInputStreamdFromFile(String shpFileName) {
+    private LittleEndianInputStream getDataInputStreamFromFile(String shpFileName) {
         FileHandle fileHandle = Gdx.files.internal(shpFileName);
         InputStream is = fileHandle.read(1000);
         LittleEndianInputStream dataInputStream = new LittleEndianInputStream(is);
