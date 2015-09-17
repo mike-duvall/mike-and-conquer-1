@@ -25,7 +25,7 @@ public class ShpTdLoader {
             s.mark(600000);
 
             try {
-                short imageCount = s.readShort();
+                int imageCount = s.readUnsignedShort();
                 if (imageCount == 0) {
 //            s.Position = start;
                     return false;
@@ -58,9 +58,23 @@ public class ShpTdLoader {
 //                    return false;
 //                }
 
+                // Check the format flag on the first frame
+                s.reset();
+                s.mark(600000);
+
+                s.skipBytes(17);
+//                s.Position = start + 17;
+
+                int b = s.readUnsignedByte();
+//                var b = s.ReadUInt8();
+
+//                s.Position = start;
+                boolean is80 = b == 0x80;
+                return b == 0x20 || b == 0x40 || b == 0x80;
+
+
 
             } catch (IOException e) {
-//            throw new RuntimeException("Error parsing .shp file", e);
                 return false;
             }
         }
@@ -69,7 +83,7 @@ public class ShpTdLoader {
         }
 
 
-        return true;
+//        return true;
 
     }
 
