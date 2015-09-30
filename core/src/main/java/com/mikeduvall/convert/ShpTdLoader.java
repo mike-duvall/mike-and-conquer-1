@@ -101,15 +101,86 @@ public class ShpTdLoader {
         }
     }
 
-    public List<ISpriteFrame> tryParseSprite(String p) {
-        List<ISpriteFrame> iSpriteFrameList = new ArrayList<ISpriteFrame>();
-        ISpriteFrame dummyFrame = new ISpriteFrame();
-        Size size = new Size();
-        size.setWidth(5);
-        dummyFrame.setSize(size);
-        iSpriteFrameList.add(dummyFrame);
-        return iSpriteFrameList;
+    List<ISpriteFrame> iSpriteFrameList;
+    int imageCount;
+
+    public boolean tryParseSprite(String shpFileName) {
+//        iSpriteFrameList = new ArrayList<ISpriteFrame>();
+//        ISpriteFrame dummyFrame = new ISpriteFrame();
+//        Size size = new Size();
+//        size.setWidth(5);
+//        dummyFrame.setSize(size);
+//        iSpriteFrameList.add(dummyFrame);
+//        return true;
+        try {
+            LittleEndianInputStream s = getDataInputStreamFromFile(shpFileName);
+
+            int start = 0;
+            s.mark(600000);
+
+            try {
+                imageCount = s.readUnsignedShort();
+                if (imageCount == 0) {
+                    s.reset();
+                    return false;
+                }
+
+//                // Last offset should point to the end of file
+//                int finalOffset = start + 14 + 8 * imageCount;
+//                int sizeOfStream = getSizeOfFile(shpFileName);
+//                if (finalOffset > sizeOfStream) {
+//                    s.reset();
+//                    return false;
+//                }
+//
+//
+//                s.reset();
+//                s.mark(600000);
+//
+//                s.skipBytes(finalOffset);
+//
+//                int eof = s.readInt();
+//
+//                if(eof != sizeOfStream) {
+//                    return false;
+//                }
+//
+//                // Check the format flag on the first frame
+//                s.reset();
+//                s.mark(600000);
+//
+//                s.skipBytes(17);
+//
+//                int b = s.readUnsignedByte();
+//
+//                s.reset();
+//                return b == 0x20 || b == 0x40 || b == 0x80;
+            } catch (IOException e) {
+                return false;
+            }
+            return true;
+        }
+        catch(GdxRuntimeException ex) {
+            return false;
+        }
+
     }
 
 
+
+    public List<ISpriteFrame> getiSpriteFrameList() {
+        return iSpriteFrameList;
+    }
+
+    public void setiSpriteFrameList(List<ISpriteFrame> iSpriteFrameList) {
+        this.iSpriteFrameList = iSpriteFrameList;
+    }
+
+    public int getImageCount() {
+        return imageCount;
+    }
+
+    public void setImageCount(int imageCount) {
+        this.imageCount = imageCount;
+    }
 }

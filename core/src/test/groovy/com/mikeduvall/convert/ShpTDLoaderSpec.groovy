@@ -43,12 +43,25 @@ class ShpTDLoaderSpec extends Specification {
         ShpTdLoader shpTdLoader = new ShpTdLoader()
 
         when:
-        List<ISpriteFrame> iSpriteFrameList =  shpTdLoader.tryParseSprite("e1.shp")
+        boolean result = shpTdLoader.tryParseSprite("e1.shp")
 
         then:
-        assert iSpriteFrameList.size() > 0
-        ISpriteFrame firstFrame = iSpriteFrameList.get(0)
-        assert firstFrame.getSize().getWidth() == 5  // don't know what this should actually be
+        assert result
+        assert shpTdLoader.getImageCount() == 532
+//        List<ISpriteFrame> iSpriteFrameList =  shpTdLoader.getiSpriteFrameList()
+//        assert iSpriteFrameList.size() > 0
+//        ISpriteFrame firstFrame = iSpriteFrameList.get(0)
+//        assert firstFrame.getSize().getWidth() == 50
+
+//        assert firstFrame.getFileOffset() ==  343
+//        assert firstFrame.getFormat() == 0x40 // or what?
+
+//        FileOffset = data & 0xffffff;
+//        Format = (Format)(data >> 24);
+//
+//        RefOffset = stream.ReadUInt16();
+//        RefFormat = (Format)stream.ReadUInt16();
+
     }
 
 
