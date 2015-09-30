@@ -7,6 +7,8 @@ import com.badlogic.gdx.utils.LittleEndianInputStream;
 import org.apache.commons.io.IOUtils;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShpTdLoader {
 
@@ -99,43 +101,15 @@ public class ShpTdLoader {
         }
     }
 
-
-
-//    static bool IsShpTD(Stream s)
-//    {
-//        var start = s.Position;
-//
-//        // First word is the image count
-//        var imageCount = s.ReadUInt16();
-//        if (imageCount == 0)
-//        {
-//            s.Position = start;
-//            return false;
-//        }
-//
-//        // Last offset should point to the end of file
-//        var finalOffset = start + 14 + 8 * imageCount;
-//        if (finalOffset > s.Length)
-//        {
-//            s.Position = start;
-//            return false;
-//        }
-//
-//        s.Position = finalOffset;
-//        var eof = s.ReadUInt32();
-//        if (eof != s.Length)
-//        {
-//            s.Position = start;
-//            return false;
-//        }
-//
-//        // Check the format flag on the first frame
-//        s.Position = start + 17;
-//        var b = s.ReadUInt8();
-//
-//        s.Position = start;
-//        return b == 0x20 || b == 0x40 || b == 0x80;
-//    }
+    public List<ISpriteFrame> tryParseSprite(String p) {
+        List<ISpriteFrame> iSpriteFrameList = new ArrayList<ISpriteFrame>();
+        ISpriteFrame dummyFrame = new ISpriteFrame();
+        Size size = new Size();
+        size.setWidth(5);
+        dummyFrame.setSize(size);
+        iSpriteFrameList.add(dummyFrame);
+        return iSpriteFrameList;
+    }
 
 
 }

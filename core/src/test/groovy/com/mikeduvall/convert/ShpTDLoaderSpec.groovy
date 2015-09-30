@@ -37,4 +37,19 @@ class ShpTDLoaderSpec extends Specification {
         assert isValidFile == true
     }
 
+
+    def "tryParseSprite() returns list of SpriteFrames"() {
+        given:
+        ShpTdLoader shpTdLoader = new ShpTdLoader()
+
+        when:
+        List<ISpriteFrame> iSpriteFrameList =  shpTdLoader.tryParseSprite("e1.shp")
+
+        then:
+        assert iSpriteFrameList.size() > 0
+        ISpriteFrame firstFrame = iSpriteFrameList.get(0)
+        assert firstFrame.getSize().getWidth() == 5  // don't know what this should actually be
+    }
+
+
 }
