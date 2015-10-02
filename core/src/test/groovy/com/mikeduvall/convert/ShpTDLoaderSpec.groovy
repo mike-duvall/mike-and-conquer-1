@@ -47,7 +47,11 @@ class ShpTDLoaderSpec extends Specification {
 
         then:
         assert result
-        assert shpTdLoader.getImageCount() == 532
+        assert shpTdLoader.imageCount == 532
+        assert shpTdLoader.size.width == 50
+        assert shpTdLoader.size.height == 39
+
+
 //        List<ISpriteFrame> iSpriteFrameList =  shpTdLoader.getiSpriteFrameList()
 //        assert iSpriteFrameList.size() > 0
 //        ISpriteFrame firstFrame = iSpriteFrameList.get(0)

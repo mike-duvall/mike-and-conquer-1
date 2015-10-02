@@ -103,6 +103,7 @@ public class ShpTdLoader {
 
     List<ISpriteFrame> iSpriteFrameList;
     int imageCount;
+    Size size;
 
     public boolean tryParseSprite(String shpFileName) {
 //        iSpriteFrameList = new ArrayList<ISpriteFrame>();
@@ -124,6 +125,12 @@ public class ShpTdLoader {
                     s.reset();
                     return false;
                 }
+
+                s.skipBytes(4);
+                size = new Size();
+                size.setWidth(s.readUnsignedShort());
+                size.setHeight(s.readUnsignedShort());
+
 
 //                // Last offset should point to the end of file
 //                int finalOffset = start + 14 + 8 * imageCount;
