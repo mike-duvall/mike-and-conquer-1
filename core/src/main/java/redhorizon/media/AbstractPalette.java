@@ -119,7 +119,11 @@ public abstract class AbstractPalette implements Palette {
 		this.palette = new byte[size][format.size];
 		for (int i = 0; i < palette.length; i++) {
 			ByteBuffer colourbytes = ByteBuffer.allocate(format.size);
-			bytechannel.read(colourbytes);
+			try {
+				bytechannel.read(colourbytes);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 			palette[i] = colourbytes.array();
 		}
 	}

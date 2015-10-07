@@ -16,6 +16,7 @@
 
 package redhorizon.utilities;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
@@ -47,7 +48,12 @@ public class BufferUtility {
 		int size = 0;
 		while (true) {
 			ByteBuffer bytedata = ByteBuffer.allocate(1024);
-			int read = bytechannel.read(bytedata);
+			int read = 0;
+			try {
+				read = bytechannel.read(bytedata);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 			if (read > 0) {
 				size += read;
 				bytes.add((ByteBuffer)bytedata.flip());

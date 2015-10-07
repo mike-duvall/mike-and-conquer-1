@@ -27,6 +27,7 @@ import redhorizon.utilities.CodecUtility;
 import redhorizon.utilities.ImageUtility;
 import static redhorizon.filetypes.ColourFormat.FORMAT_INDEXED;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.GatheringByteChannel;
 import java.nio.channels.ReadableByteChannel;
@@ -62,7 +63,11 @@ public class ShpFileCNC extends ShpFile<ShpFileHeaderCNC> implements AnimationFi
 		try {
 			// Construct file header
 			ByteBuffer headerbytes = ByteBuffer.allocate(ShpFileHeaderCNC.HEADER_SIZE);
-			bytechannel.read(headerbytes);
+			try {
+				bytechannel.read(headerbytes);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 			headerbytes.rewind();
 			shpfileheader = new ShpFileHeaderCNC(headerbytes);
 
@@ -70,7 +75,11 @@ public class ShpFileCNC extends ShpFile<ShpFileHeaderCNC> implements AnimationFi
 			ShpImageOffsetCNC[] offsets = new ShpImageOffsetCNC[numImages() + 2];
 			for (int i = 0; i < offsets.length; i++) {
 				ByteBuffer offsetbytes = ByteBuffer.allocate(ShpImageOffsetCNC.OFFSET_SIZE);
-				bytechannel.read(offsetbytes);
+				try {
+					bytechannel.read(offsetbytes);
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
 				offsets[i] = new ShpImageOffsetCNC((ByteBuffer)offsetbytes.rewind());
 			}
 
@@ -83,7 +92,11 @@ public class ShpFileCNC extends ShpFile<ShpFileHeaderCNC> implements AnimationFi
 
 				// Format conversion buffers
 				ByteBuffer sourcebytes = ByteBuffer.allocate(offsets[i + 1].offset - imageoffset.offset);
-				bytechannel.read(sourcebytes);
+				try {
+					bytechannel.read(sourcebytes);
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
 				sourcebytes.rewind();
 				ByteBuffer destbytes = ByteBuffer.allocate(width() * height());
 
@@ -117,7 +130,11 @@ public class ShpFileCNC extends ShpFile<ShpFileHeaderCNC> implements AnimationFi
 			}
 		}
 		finally {
-			bytechannel.close();
+			try {
+				bytechannel.close();
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 
@@ -275,12 +292,20 @@ public class ShpFileCNC extends ShpFile<ShpFileHeaderCNC> implements AnimationFi
 			ByteBuffer header = shpfileheader.toByteBuffer();
 
 			// Write file
-			outputchannel.write(header);
-			outputchannel.write(offsets);
-			outputchannel.write(images);
+			try {
+				outputchannel.write(header);
+				outputchannel.write(offsets);
+				outputchannel.write(images);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 		finally {
-			outputchannel.close();
+			try {
+				outputchannel.close();
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 }

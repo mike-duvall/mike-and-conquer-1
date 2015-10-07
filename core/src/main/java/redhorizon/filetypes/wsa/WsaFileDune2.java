@@ -24,6 +24,7 @@ import redhorizon.filetypes.png.PngFile;
 import redhorizon.utilities.CodecUtility;
 import redhorizon.utilities.channels.ReadableByteChannelAdapter;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.GatheringByteChannel;
@@ -83,14 +84,22 @@ public class WsaFileDune2 extends WsaFile<WsaFileHeaderDune2> implements Palette
 		try {
 			// Read file header
 			ByteBuffer headerbytes = ByteBuffer.allocate(WsaFileHeaderDune2.HEADER_SIZE);
-			filechannel.read(headerbytes);
+			try {
+				filechannel.read(headerbytes);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 			headerbytes.rewind();
 			wsaheader = new WsaFileHeaderDune2(headerbytes);
 
 			// Read offsets
 			wsaoffsets = new int[numImages() + 2];
 			ByteBuffer offsets = ByteBuffer.allocate(wsaoffsets.length * 4);
-			filechannel.read(offsets);
+			try {
+				filechannel.read(offsets);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 			offsets.rewind();
 			for (int i = 0; i < wsaoffsets.length; i++) {
 				wsaoffsets[i] = offsets.getInt();
@@ -105,7 +114,11 @@ public class WsaFileDune2 extends WsaFile<WsaFileHeaderDune2> implements Palette
 
 				// Source frame data
 				ByteBuffer sourcebytes = ByteBuffer.allocate(sourcelength);
-				filechannel.read(sourcebytes, offset);
+				try {
+					filechannel.read(sourcebytes, offset);
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
 				sourcebytes.rewind();
 
 				// Intermediate and final frame data
@@ -121,7 +134,11 @@ public class WsaFileDune2 extends WsaFile<WsaFileHeaderDune2> implements Palette
 			}
 		}
 		finally {
-			filechannel.close();
+			try {
+				filechannel.close();
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 
@@ -264,8 +281,12 @@ public class WsaFileDune2 extends WsaFile<WsaFileHeaderDune2> implements Palette
 
 
 		// Write file to disk
-		outputchannel.write(header);
-		outputchannel.write(frameoffsets);
-		outputchannel.write(frames);
+		try {
+			outputchannel.write(header);
+			outputchannel.write(frameoffsets);
+			outputchannel.write(frames);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

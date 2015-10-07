@@ -78,7 +78,12 @@ public class PngFile extends AbstractFile implements ImageFile, PalettedInternal
 		super(name);
 
 		// Read the file data
-		BufferedImage image = ImageIO.read(Channels.newInputStream(bytechannel));
+		BufferedImage image = null;
+		try {
+			image = ImageIO.read(Channels.newInputStream(bytechannel));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 
 		// Fill image attributes and image data
 		width    = image.getWidth();
@@ -139,8 +144,12 @@ public class PngFile extends AbstractFile implements ImageFile, PalettedInternal
 
 		// Load palette from 0th parameter
 		if (imagesfile instanceof Paletted && params.length > 0) {
-			try (PalFile palfile = new PalFile("PNG palette", FileChannel.open(Paths.get(params[0])))) {
-				pngpalette = new PngPalette(palfile);
+			try {
+				try (PalFile palfile = new PalFile("PNG palette", FileChannel.open(Paths.get(params[0])))) {
+                    pngpalette = new PngPalette(palfile);
+                }
+			} catch (IOException e) {
+				throw new RuntimeException(e);
 			}
 		}
 
@@ -331,7 +340,11 @@ public class PngFile extends AbstractFile implements ImageFile, PalettedInternal
 			pngimage.get(outputimgdata).rewind();
 
 			// Write to file
-			ImageIO.write(outputimg, "PNG", Channels.newOutputStream(outputchannel));
+			try {
+				ImageIO.write(outputimg, "PNG", Channels.newOutputStream(outputchannel));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 
 		// Create 32-bit PNG

@@ -138,11 +138,19 @@ public class ShpFileDune2 extends ShpFile<ShpFileHeaderDune2> implements Writabl
 
 		// Read file header (read ahead header for offset check)
 		ByteBuffer headerbytes = ByteBuffer.allocate(ShpFileHeaderDune2.size() + 3);
-		filechannel.read(headerbytes);
+		try {
+			filechannel.read(headerbytes);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 		headerbytes.rewind();
 		shpfileheader = new ShpFileHeaderDune2(headerbytes);
 
-		filechannel.position(filechannel.position() - 3);
+		try {
+			filechannel.position(filechannel.position() - 3);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 		shpimageheaders = new ShpImageHeaderDune2[numImages()];
 		shpimages       = new ByteBuffer[numImages()];
 
@@ -150,7 +158,11 @@ public class ShpFileDune2 extends ShpFile<ShpFileHeaderDune2> implements Writabl
 		int[] offsets = new int[numImages() + 1];
 		int offsetsize = shpfileheader.offsetsize;
 		ByteBuffer offsetbytes = ByteBuffer.allocate(offsets.length * offsetsize);
-		filechannel.read(offsetbytes);
+		try {
+			filechannel.read(offsetbytes);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 		offsetbytes.rewind();
 		for (int i = 0; i < offsets.length; i++) {
 			offsets[i] = offsetsize == IMAGE_OFFSET_2 ?
@@ -159,9 +171,17 @@ public class ShpFileDune2 extends ShpFile<ShpFileHeaderDune2> implements Writabl
 
 		// Read image headers and image data
 		for (int i = 0; i < numImages(); i++) {
-			filechannel.position(offsets[i] + 2);
+			try {
+				filechannel.position(offsets[i] + 2);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 			ByteBuffer imagedata = ByteBuffer.allocate(Math.abs(offsets[i + 1] - offsets[i]));
-			filechannel.read(imagedata);
+			try {
+				filechannel.read(imagedata);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 			imagedata.rewind();
 
 			ShpImageHeaderDune2 imageheader = new ShpImageHeaderDune2(imagedata);
@@ -293,15 +313,19 @@ public class ShpFileDune2 extends ShpFile<ShpFileHeaderDune2> implements Writabl
 		int[] widths  = new int[imagefiles.length];
 		int[] heights = new int[imagefiles.length];
 		for (int i = 0; i < imagefiles.length; i++) {
-			try (ImageFile imagefile = imagefiles[i]) {
-				ByteBuffer imagedata = ByteBuffer.allocate(imagefile.width() * imagefile.height() *
-						imagefile.format().size);
-				(imagefile instanceof PalettedInternal ?
-						((PalettedInternal)imagefile).getRawImageData() : imagefile.getImageData())
-						.read(imagedata);
-				images[i] = (ByteBuffer)imagedata.rewind();
-				widths[i]  = imagefile.width();
-				heights[i] = imagefile.height();
+			try {
+				try (ImageFile imagefile = imagefiles[i]) {
+                    ByteBuffer imagedata = ByteBuffer.allocate(imagefile.width() * imagefile.height() *
+                            imagefile.format().size);
+                    (imagefile instanceof PalettedInternal ?
+                            ((PalettedInternal)imagefile).getRawImageData() : imagefile.getImageData())
+                            .read(imagedata);
+                    images[i] = (ByteBuffer)imagedata.rewind();
+                    widths[i]  = imagefile.width();
+                    heights[i] = imagefile.height();
+                }
+			} catch (IOException e) {
+				throw new RuntimeException(e);
 			}
 		}
 		buildFile(widths, heights, images);
@@ -537,11 +561,15 @@ public class ShpFileDune2 extends ShpFile<ShpFileHeaderDune2> implements Writabl
 
 
 		// Write file to disk
-		outputchannel.write(shpfileheader.toByteBuffer());
-		outputchannel.write(imageoffsets);
-		for (int i = 0; i < numimgs; i++) {
-			outputchannel.write(shpimageheaders[i].toByteBuffer());
-			outputchannel.write(images[i]);
+		try {
+			outputchannel.write(shpfileheader.toByteBuffer());
+			outputchannel.write(imageoffsets);
+			for (int i = 0; i < numimgs; i++) {
+				outputchannel.write(shpimageheaders[i].toByteBuffer());
+				outputchannel.write(images[i]);
+			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 }

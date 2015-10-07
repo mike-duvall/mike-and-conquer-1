@@ -78,14 +78,22 @@ public class WsaFileCNC extends WsaFile<WsaFileHeaderCNC> implements PalettedInt
 
 		// Read file header
 		ByteBuffer headerbytes = ByteBuffer.allocate(WsaFileHeaderCNC.HEADER_SIZE);
-		bytechannel.read(headerbytes);
+		try {
+			bytechannel.read(headerbytes);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 		headerbytes.rewind();
 		wsaheader = new WsaFileHeaderCNC(headerbytes);
 
 		// Read offsets
 		wsaoffsets = new int[numImages() + 2];
 		ByteBuffer offsetsbytes = ByteBuffer.allocate(wsaoffsets.length * 4);
-		bytechannel.read(offsetsbytes);
+		try {
+			bytechannel.read(offsetsbytes);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 		offsetsbytes.rewind();
 		for (int i = 0; i < wsaoffsets.length; i++) {
 			wsaoffsets[i] = offsetsbytes.getInt();
@@ -93,7 +101,11 @@ public class WsaFileCNC extends WsaFile<WsaFileHeaderCNC> implements PalettedInt
 
 		// Read internal palette
 		ByteBuffer palettebytes = ByteBuffer.allocate(PALETTE_SIZE);
-		bytechannel.read(palettebytes);
+		try {
+			bytechannel.read(palettebytes);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 		palettebytes.rewind();
 		wsapalette = new WsaPalette(palettebytes);
 
@@ -104,12 +116,18 @@ public class WsaFileCNC extends WsaFile<WsaFileHeaderCNC> implements PalettedInt
 
 		// If the input channel isn't seekable, create a temp file that is seekable
 		else {
-			File tempanimdatafile = File.createTempFile(name, null);
-			tempanimdatafile.deleteOnExit();
-			FileChannel filechannel = FileChannel.open(Paths.get(tempanimdatafile.getAbsolutePath()), WRITE);
-			filechannel.write(BufferUtility.readRemaining(bytechannel));
-			filechannel.position(0);
-			this.bytechannel = filechannel;
+			File tempanimdatafile = null;
+			try {
+				tempanimdatafile = File.createTempFile(name, null);
+				tempanimdatafile.deleteOnExit();
+				FileChannel filechannel = FileChannel.open(Paths.get(tempanimdatafile.getAbsolutePath()), WRITE);
+				filechannel.write(BufferUtility.readRemaining(bytechannel));
+				filechannel.position(0);
+				this.bytechannel = filechannel;
+
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 
@@ -193,7 +211,11 @@ public class WsaFileCNC extends WsaFile<WsaFileHeaderCNC> implements PalettedInt
 	@Override
 	public void close() {
 
-		bytechannel.close();
+		try {
+			bytechannel.close();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 		decoderthreadpool.shutdownNow();
 	}
 
@@ -213,7 +235,12 @@ public class WsaFileCNC extends WsaFile<WsaFileHeaderCNC> implements PalettedInt
 	public ReadableByteChannel getImagesData() {
 
 		// Leverage the raw frame decoder as input to the colour decoder
-		Pipe pipe = Pipe.open();
+		Pipe pipe = null;
+		try {
+			pipe = Pipe.open();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 		decoderthreadpool.execute(new ColourFrameDecoder(getRawImageData(), pipe.sink()));
 		return pipe.source();
 	}
@@ -233,7 +260,12 @@ public class WsaFileCNC extends WsaFile<WsaFileHeaderCNC> implements PalettedInt
 	@Override
 	public ReadableByteChannel getRawImageData() {
 
-		Pipe pipe = Pipe.open();
+		Pipe pipe = null;
+		try {
+			pipe = Pipe.open();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 		decoderthreadpool.execute(new RawFrameDecoder(
 				new DuplicateReadOnlyByteChannel(bytechannel), pipe.sink()));
 		return pipe.source();
@@ -318,10 +350,14 @@ public class WsaFileCNC extends WsaFile<WsaFileHeaderCNC> implements PalettedInt
 
 
 		// Write file to disk
-		outputchannel.write(header);
-		outputchannel.write(frameoffsets);
-		outputchannel.write(palette);
-		outputchannel.write(frames);
+		try {
+			outputchannel.write(header);
+			outputchannel.write(frameoffsets);
+			outputchannel.write(palette);
+			outputchannel.write(frames);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 
 		// Generate high-res colour lookup table
 		if (!srcnohires) {
@@ -383,7 +419,11 @@ public class WsaFileCNC extends WsaFile<WsaFileHeaderCNC> implements PalettedInt
 
 			// Source frame data (is at frame offset + palette size)
 			ByteBuffer sourcebytes = ByteBuffer.allocate(sourcelength);
-			inputchannel.read(sourcebytes);
+			try {
+				inputchannel.read(sourcebytes);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 			sourcebytes.rewind();
 
 			// Intermediate and final frame data
@@ -408,7 +448,11 @@ public class WsaFileCNC extends WsaFile<WsaFileHeaderCNC> implements PalettedInt
 
 			for (int i = 0; i < numImages(); i++) {
 				ByteBuffer framebytes = decodeFrame(i, lastframebytes);
-				outputchannel.write(framebytes);
+				try {
+					outputchannel.write(framebytes);
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
 				lastframebytes = (ByteBuffer)framebytes.rewind();
 			}
 		}
@@ -452,12 +496,20 @@ public class WsaFileCNC extends WsaFile<WsaFileHeaderCNC> implements PalettedInt
 			// Colour every decoded frame
 			for (int i = 0; i < numImages(); i++) {
 				framebytes.clear();
-				inputchannel.read(framebytes);
+				try {
+					inputchannel.read(framebytes);
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
 				framebytes.rewind();
 
 				colourbytes.clear();
 				ImageUtility.applyPalette(framebytes, colourbytes, wsapalette);
-				outputchannel.write(colourbytes);
+				try {
+					outputchannel.write(colourbytes);
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
 			}
 		}
 

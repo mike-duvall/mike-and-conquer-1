@@ -24,6 +24,7 @@ import redhorizon.filetypes.PalettedInternal;
 import redhorizon.utilities.ImageUtility;
 import static redhorizon.filetypes.ColourFormat.*;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 
 /**
@@ -170,9 +171,13 @@ public abstract class WsaFile<H extends WsaFileHeader> extends AbstractFile impl
 			ImageFile imagefile = imagefiles[i];
 			ByteBuffer imagedata = ByteBuffer.allocate(imagefile.width() * imagefile.height() *
 					imagefile.format().size);
-			(imagefile instanceof PalettedInternal ?
-					((PalettedInternal)imagefile).getRawImageData() : imagefile.getImageData())
-					.read(imagedata);
+			try {
+				(imagefile instanceof PalettedInternal ?
+                        ((PalettedInternal)imagefile).getRawImageData() : imagefile.getImageData())
+                        .read(imagedata);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 			images[i] = (ByteBuffer)imagedata.rewind();
 		}
 		buildFile(imagefiles[0].width(), imagefiles[0].height(), framerate, looping, images);

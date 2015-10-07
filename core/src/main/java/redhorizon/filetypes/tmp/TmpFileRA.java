@@ -25,6 +25,7 @@ import redhorizon.utilities.BufferUtility;
 import redhorizon.utilities.channels.ReadableByteChannelAdapter;
 import static redhorizon.filetypes.ColourFormat.FORMAT_RGBA;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 
@@ -53,7 +54,11 @@ public class TmpFileRA extends AbstractFile implements ImagesFile, Paletted {
 		try {
 			// Read header
 			ByteBuffer headerbytes = ByteBuffer.allocate(TmpFileHeaderRA.HEADER_SIZE);
-			bytechannel.read(headerbytes);
+			try {
+				bytechannel.read(headerbytes);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 			headerbytes.rewind();
 			tmpheader = new TmpFileHeaderRA(headerbytes);
 
@@ -80,7 +85,11 @@ public class TmpFileRA extends AbstractFile implements ImagesFile, Paletted {
 			}
 		}
 		finally {
-			bytechannel.close();
+			try {
+				bytechannel.close();
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 

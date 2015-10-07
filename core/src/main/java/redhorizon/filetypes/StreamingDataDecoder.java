@@ -16,6 +16,7 @@
 
 package redhorizon.filetypes;
 
+import java.io.IOException;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 
@@ -61,8 +62,13 @@ public abstract class StreamingDataDecoder implements Runnable {
 			decode();
 		}
 		finally {
-			inputchannel.close();
-			outputchannel.close();
+			try {
+				inputchannel.close();
+				outputchannel.close();
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+
 		}
 	}
 

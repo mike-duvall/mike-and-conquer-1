@@ -16,6 +16,7 @@
 
 package redhorizon.utilities.channels;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
 
@@ -60,7 +61,11 @@ public class DuplicateReadOnlyByteChannel extends AbstractDuplicateReadOnlyByteC
 	@Override
 	public int read(ByteBuffer dst) {
 
-		return bytechannel.read(dst);
+		try {
+			return bytechannel.read(dst);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**
@@ -69,6 +74,10 @@ public class DuplicateReadOnlyByteChannel extends AbstractDuplicateReadOnlyByteC
 	@Override
 	public long size() {
 
-		return bytechannel.size();
+		try {
+			return bytechannel.size();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

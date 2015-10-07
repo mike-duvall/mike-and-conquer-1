@@ -24,6 +24,7 @@ import redhorizon.filetypes.Paletted;
 import redhorizon.filetypes.png.PngFile;
 import redhorizon.media.Palette;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 import java.util.Arrays;
@@ -210,12 +211,20 @@ public class ImageUtility {
 			ByteBuffer imagedata = ByteBuffer.allocate(imagesfile.width() * imagesfile.height());
 			if (imagesfile instanceof Paletted) {
 				ByteBuffer rawimage = ByteBuffer.allocate(width * height);
-				imagesdata.read(rawimage);
+				try {
+					imagesdata.read(rawimage);
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
 				rawimage.rewind();
 				applyPalette(rawimage, imagedata, palette);
 			}
 			else {
-				imagesdata.read(imagedata);
+				try {
+					imagesdata.read(imagedata);
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
 				imagedata.rewind();
 			}
 			images[i] = imagedata;
