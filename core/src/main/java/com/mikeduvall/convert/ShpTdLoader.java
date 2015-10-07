@@ -131,6 +131,25 @@ public class ShpTdLoader {
                 size.setWidth(s.readUnsignedShort());
                 size.setHeight(s.readUnsignedShort());
 
+                s.skipBytes(4);
+                iSpriteFrameList = new ArrayList<ISpriteFrame>();
+                ISpriteFrame dummyFrame = new ISpriteFrame();
+
+                int byte1 = s.readUnsignedByte();
+                int byte2 = s.readUnsignedByte();
+                int byte3 = s.readUnsignedByte();
+                int byte4 = s.readUnsignedByte();
+
+
+                long data = s.readLong();
+//                long fileOffset = data & 0xffffff;
+                long fileOffset = data & 0xffffff00;
+                fileOffset = fileOffset - 0x80000000;
+//                Format = (Format)(data >> 24);
+                dummyFrame.setFileOffset(fileOffset);
+
+                iSpriteFrameList.add(dummyFrame);
+
 
 //                // Last offset should point to the end of file
 //                int finalOffset = start + 14 + 8 * imageCount;

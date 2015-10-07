@@ -2,13 +2,14 @@ package com.mikeduvall.convert;
 
 public class ISpriteFrame {
 
-    Size size;
+    long fileOffset;
 
-    public Size getSize() {
-        return size;
+
+    public long getFileOffset() {
+        return fileOffset;
     }
 
-    public void setSize(Size size) {
-        this.size = size;
+    public void setFileOffset(long fileOffset) {
+        this.fileOffset = fileOffset;
     }
 }
