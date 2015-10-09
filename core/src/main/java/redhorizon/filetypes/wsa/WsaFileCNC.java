@@ -77,7 +77,7 @@ public class WsaFileCNC extends WsaFile<WsaFileHeaderCNC> implements PalettedInt
 		super(name);
 
 		// Read file header
-		ByteBuffer headerbytes = ByteBuffer.allocate(WsaFileHeaderCNC.HEADER_SIZE);
+		ByteBuffer headerbytes = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(WsaFileHeaderCNC.HEADER_SIZE);
 		try {
 			bytechannel.read(headerbytes);
 		} catch (IOException e) {
@@ -88,7 +88,7 @@ public class WsaFileCNC extends WsaFile<WsaFileHeaderCNC> implements PalettedInt
 
 		// Read offsets
 		wsaoffsets = new int[numImages() + 2];
-		ByteBuffer offsetsbytes = ByteBuffer.allocate(wsaoffsets.length * 4);
+		ByteBuffer offsetsbytes = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(wsaoffsets.length * 4);
 		try {
 			bytechannel.read(offsetsbytes);
 		} catch (IOException e) {
@@ -100,7 +100,7 @@ public class WsaFileCNC extends WsaFile<WsaFileHeaderCNC> implements PalettedInt
 		}
 
 		// Read internal palette
-		ByteBuffer palettebytes = ByteBuffer.allocate(PALETTE_SIZE);
+		ByteBuffer palettebytes = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(PALETTE_SIZE);
 		try {
 			bytechannel.read(palettebytes);
 		} catch (IOException e) {
@@ -323,15 +323,15 @@ public class WsaFileCNC extends WsaFile<WsaFileHeaderCNC> implements PalettedInt
 
 		// Encode each frame, construct matching offsets
 		ByteBuffer[] frames = new ByteBuffer[isLooping() ? numimages + 1 : numimages];
-		ByteBuffer lastbytes = ByteBuffer.allocate(width() * height());
+		ByteBuffer lastbytes = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(width() * height());
 
-		ByteBuffer frameoffsets = ByteBuffer.allocate((numimages + 2) * 4);
+		ByteBuffer frameoffsets = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer((numimages + 2) * 4);
 		int offsettotal = WsaFileHeaderCNC.HEADER_SIZE + ((numimages + 2) * 4);
 
 		for (int i = 0; i < frames.length; i++) {
 			ByteBuffer framebytes = wsaframes[i];
-			ByteBuffer frameint = ByteBuffer.allocate((int)(framebytes.capacity() * 1.5));
-			ByteBuffer frame    = ByteBuffer.allocate((int)(framebytes.capacity() * 1.5));
+			ByteBuffer frameint = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer((int)(framebytes.capacity() * 1.5));
+			ByteBuffer frame    = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer((int)(framebytes.capacity() * 1.5));
 
 			// First encode in Format40, then Format80
 			CodecUtility.encodeFormat40(framebytes, frameint, lastbytes);
@@ -369,7 +369,7 @@ public class WsaFileCNC extends WsaFile<WsaFileHeaderCNC> implements PalettedInt
 
 			// Write the index of the closest interpolated palette colour
 			// TODO: Perform proper colour interpolation
-			ByteBuffer lookup = ByteBuffer.allocate(256);
+			ByteBuffer lookup = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(256);
 			for (int i = 0; i < 256; i++) {
 				lookup.put((byte)i);
 			}
@@ -418,7 +418,7 @@ public class WsaFileCNC extends WsaFile<WsaFileHeaderCNC> implements PalettedInt
 			int sourcelength = wsaoffsets[framenum + 1] - offset;
 
 			// Source frame data (is at frame offset + palette size)
-			ByteBuffer sourcebytes = ByteBuffer.allocate(sourcelength);
+			ByteBuffer sourcebytes = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(sourcelength);
 			try {
 				inputchannel.read(sourcebytes);
 			} catch (IOException e) {
@@ -428,8 +428,8 @@ public class WsaFileCNC extends WsaFile<WsaFileHeaderCNC> implements PalettedInt
 
 			// Intermediate and final frame data
 			int framesize = width() * height();
-			ByteBuffer intbytes   = ByteBuffer.allocate(framesize);
-			ByteBuffer framebytes = ByteBuffer.allocate(framesize);
+			ByteBuffer intbytes   = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(framesize);
+			ByteBuffer framebytes = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(framesize);
 
 			// First decompress from Format80, then decode as Format40
 			CodecUtility.decodeFormat80(sourcebytes, intbytes);
@@ -444,7 +444,7 @@ public class WsaFileCNC extends WsaFile<WsaFileHeaderCNC> implements PalettedInt
 		@Override
 		protected void decode() {
 
-			ByteBuffer lastframebytes = ByteBuffer.allocate(width() * height());
+			ByteBuffer lastframebytes = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(width() * height());
 
 			for (int i = 0; i < numImages(); i++) {
 				ByteBuffer framebytes = decodeFrame(i, lastframebytes);
@@ -490,8 +490,8 @@ public class WsaFileCNC extends WsaFile<WsaFileHeaderCNC> implements PalettedInt
 		@Override
 		protected void decode() {
 
-			ByteBuffer framebytes  = ByteBuffer.allocate(width() * height());
-			ByteBuffer colourbytes = ByteBuffer.allocate(width() * height() * format().size);
+			ByteBuffer framebytes  = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(width() * height());
+			ByteBuffer colourbytes = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(width() * height() * format().size);
 
 			// Colour every decoded frame
 			for (int i = 0; i < numImages(); i++) {

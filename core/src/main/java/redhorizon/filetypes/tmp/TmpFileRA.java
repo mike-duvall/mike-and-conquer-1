@@ -53,7 +53,7 @@ public class TmpFileRA extends AbstractFile implements ImagesFile, Paletted {
 
 		try {
 			// Read header
-			ByteBuffer headerbytes = ByteBuffer.allocate(TmpFileHeaderRA.HEADER_SIZE);
+			ByteBuffer headerbytes = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(TmpFileHeaderRA.HEADER_SIZE);
 			try {
 				bytechannel.read(headerbytes);
 			} catch (IOException e) {
@@ -63,7 +63,7 @@ public class TmpFileRA extends AbstractFile implements ImagesFile, Paletted {
 			tmpheader = new TmpFileHeaderRA(headerbytes);
 
 			// Read image offsets
-			ByteBuffer offsetsbytes = ByteBuffer.allocate(numImages());
+			ByteBuffer offsetsbytes = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(numImages());
 			byte[] imageoffsets = offsetsbytes.array();
 
 			// Read images
@@ -78,7 +78,7 @@ public class TmpFileRA extends AbstractFile implements ImagesFile, Paletted {
 				}
 
 				// Read data at given offset
-				ByteBuffer imagedata = ByteBuffer.allocate(width() * height());
+				ByteBuffer imagedata = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(width() * height());
 				imagesdata.position(tmpheader.imagedata + (imageoffset * width() * height()));
 				imagesdata.get(imagedata.array());
 				tmpimages[i] = imagedata;

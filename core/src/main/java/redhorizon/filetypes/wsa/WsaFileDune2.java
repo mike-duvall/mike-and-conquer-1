@@ -83,7 +83,7 @@ public class WsaFileDune2 extends WsaFile<WsaFileHeaderDune2> implements Palette
 
 		try {
 			// Read file header
-			ByteBuffer headerbytes = ByteBuffer.allocate(WsaFileHeaderDune2.HEADER_SIZE);
+			ByteBuffer headerbytes = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(WsaFileHeaderDune2.HEADER_SIZE);
 			try {
 				filechannel.read(headerbytes);
 			} catch (IOException e) {
@@ -94,7 +94,7 @@ public class WsaFileDune2 extends WsaFile<WsaFileHeaderDune2> implements Palette
 
 			// Read offsets
 			wsaoffsets = new int[numImages() + 2];
-			ByteBuffer offsets = ByteBuffer.allocate(wsaoffsets.length * 4);
+			ByteBuffer offsets = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(wsaoffsets.length * 4);
 			try {
 				filechannel.read(offsets);
 			} catch (IOException e) {
@@ -107,13 +107,13 @@ public class WsaFileDune2 extends WsaFile<WsaFileHeaderDune2> implements Palette
 
 			// Read image data
 			wsaframes = new ByteBuffer[numImages()];
-			ByteBuffer lastbytes = ByteBuffer.allocate(width() * height());
+			ByteBuffer lastbytes = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(width() * height());
 			for (int i = 0; i < wsaframes.length; i++) {
 				int offset = wsaoffsets[i];
 				int sourcelength = wsaoffsets[i + 1] - offset;
 
 				// Source frame data
-				ByteBuffer sourcebytes = ByteBuffer.allocate(sourcelength);
+				ByteBuffer sourcebytes = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(sourcelength);
 				try {
 					filechannel.read(sourcebytes, offset);
 				} catch (IOException e) {
@@ -123,8 +123,8 @@ public class WsaFileDune2 extends WsaFile<WsaFileHeaderDune2> implements Palette
 
 				// Intermediate and final frame data
 				int framesize = width() * height();
-				ByteBuffer intbytes   = ByteBuffer.allocate(framesize);
-				ByteBuffer framebytes = ByteBuffer.allocate(framesize);
+				ByteBuffer intbytes   = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(framesize);
+				ByteBuffer framebytes = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(framesize);
 
 				// First decompress from Format80, then decode as Format40
 				CodecUtility.decodeFormat80(sourcebytes, intbytes);
@@ -253,16 +253,16 @@ public class WsaFileDune2 extends WsaFile<WsaFileHeaderDune2> implements Palette
 
 		// Encode each frame, construct matching offsets
 		ByteBuffer[] frames = new ByteBuffer[isLooping() ? numimages + 1 : numimages];
-		ByteBuffer lastbytes = ByteBuffer.allocate(width() * height());
+		ByteBuffer lastbytes = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(width() * height());
 
 		int offsetsize = (numimages + 2) * 4;
-		ByteBuffer frameoffsets = ByteBuffer.allocate(offsetsize);
+		ByteBuffer frameoffsets = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(offsetsize);
 		int offsettotal = WsaFileHeaderDune2.HEADER_SIZE + offsetsize;
 
 		for (int i = 0; i < frames.length; i++) {
 			ByteBuffer framebytes = wsaframes[i];
-			ByteBuffer frameint = ByteBuffer.allocate((int)(framebytes.capacity() * 1.5));
-			ByteBuffer frame    = ByteBuffer.allocate((int)(framebytes.capacity() * 1.5));
+			ByteBuffer frameint = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer((int)(framebytes.capacity() * 1.5));
+			ByteBuffer frame    = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer((int)(framebytes.capacity() * 1.5));
 
 			// First encode in Format40, then Format80
 			CodecUtility.encodeFormat40(framebytes, frameint, lastbytes);

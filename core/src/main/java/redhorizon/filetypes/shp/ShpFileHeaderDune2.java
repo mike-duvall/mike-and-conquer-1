@@ -73,7 +73,7 @@ public class ShpFileHeaderDune2 extends ShpFileHeader {
 	@Override
 	ByteBuffer toByteBuffer() {
 
-		ByteBuffer header = ByteBuffer.allocate(2);
+		ByteBuffer header = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(2);
 		header.putShort(numimages);
 		header.rewind();
 		return header;

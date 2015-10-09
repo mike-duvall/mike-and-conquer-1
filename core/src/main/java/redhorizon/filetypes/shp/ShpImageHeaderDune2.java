@@ -143,7 +143,7 @@ public class ShpImageHeaderDune2 {
 	 */
 	ByteBuffer toByteBuffer() {
 
-		ByteBuffer imageheader = ByteBuffer.allocate(size());
+		ByteBuffer imageheader = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(size());
 		imageheader.putShort(flags)
 				   .put(slices)
 				   .putShort(width)

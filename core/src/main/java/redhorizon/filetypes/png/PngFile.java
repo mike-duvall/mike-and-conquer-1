@@ -192,7 +192,7 @@ public class PngFile extends AbstractFile implements ImageFile, PalettedInternal
 				srcheights[i] = imageheight;
 
 				// Create an image the same size as the source frame
-				ByteBuffer image = ByteBuffer.allocate(imagewidth * imageheight);
+				ByteBuffer image = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(imagewidth * imageheight);
 				srcimagesbytes.read(image);
 				image.rewind();
 				allimages[i] = image;
@@ -231,7 +231,7 @@ public class PngFile extends AbstractFile implements ImageFile, PalettedInternal
 
 		// Apply RGB(A) palette if paletted
 		if (isIndexed()) {
-			ByteBuffer image = ByteBuffer.allocate(width() * height() * format().size);
+			ByteBuffer image = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(width() * height() * format().size);
 			ImageUtility.applyPalette(pngimage, image, pngpalette);
 			return new ReadableByteChannelAdapter(image);
 		}

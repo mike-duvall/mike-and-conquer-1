@@ -62,7 +62,7 @@ public abstract class AbstractPalette implements Palette {
 
 		try (ReadableByteChannel palettedata = palettefile.getPaletteData()) {
 			for (int i = 0; i < size; i++) {
-				ByteBuffer colourbytes = ByteBuffer.allocate(format.size);
+				ByteBuffer colourbytes = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(format.size);
 				palettedata.read(colourbytes);
 				palette[i] = colourbytes.array();
 			}
@@ -118,7 +118,7 @@ public abstract class AbstractPalette implements Palette {
 		this.format  = format;
 		this.palette = new byte[size][format.size];
 		for (int i = 0; i < palette.length; i++) {
-			ByteBuffer colourbytes = ByteBuffer.allocate(format.size);
+			ByteBuffer colourbytes = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(format.size);
 			try {
 				bytechannel.read(colourbytes);
 			} catch (IOException e) {
@@ -162,7 +162,7 @@ public abstract class AbstractPalette implements Palette {
 	 */
 	public ByteBuffer toByteBuffer() {
 
-		ByteBuffer buffer = ByteBuffer.allocate(format.size);
+		ByteBuffer buffer = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(format.size);
 		for (byte[] colour: palette) {
 			buffer.put(colour);
 		}

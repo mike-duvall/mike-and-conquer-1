@@ -30,6 +30,7 @@ class ShpFileCNCSpec extends Specification {
 
         then:
         shpFileCNC.width() == 50
+        shpFileCNC.height()  == 39
 
     }
 

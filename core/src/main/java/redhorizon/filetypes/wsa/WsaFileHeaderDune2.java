@@ -65,7 +65,7 @@ public class WsaFileHeaderDune2 extends WsaFileHeader {
 	@Override
 	ByteBuffer toByteBuffer() {
 
-		ByteBuffer header = ByteBuffer.allocate(HEADER_SIZE);
+		ByteBuffer header = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(HEADER_SIZE);
 		header.putShort(numframes);
 		header.putShort(width);
 		header.putShort(height);

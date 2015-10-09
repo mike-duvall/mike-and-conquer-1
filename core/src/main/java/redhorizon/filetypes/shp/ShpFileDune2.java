@@ -137,7 +137,7 @@ public class ShpFileDune2 extends ShpFile<ShpFileHeaderDune2> implements Writabl
 		super(name);
 
 		// Read file header (read ahead header for offset check)
-		ByteBuffer headerbytes = ByteBuffer.allocate(ShpFileHeaderDune2.size() + 3);
+		ByteBuffer headerbytes = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(ShpFileHeaderDune2.size() + 3);
 		try {
 			filechannel.read(headerbytes);
 		} catch (IOException e) {
@@ -157,7 +157,7 @@ public class ShpFileDune2 extends ShpFile<ShpFileHeaderDune2> implements Writabl
 		// Read offset table
 		int[] offsets = new int[numImages() + 1];
 		int offsetsize = shpfileheader.offsetsize;
-		ByteBuffer offsetbytes = ByteBuffer.allocate(offsets.length * offsetsize);
+		ByteBuffer offsetbytes = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(offsets.length * offsetsize);
 		try {
 			filechannel.read(offsetbytes);
 		} catch (IOException e) {
@@ -176,7 +176,7 @@ public class ShpFileDune2 extends ShpFile<ShpFileHeaderDune2> implements Writabl
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
-			ByteBuffer imagedata = ByteBuffer.allocate(Math.abs(offsets[i + 1] - offsets[i]));
+			ByteBuffer imagedata = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(Math.abs(offsets[i + 1] - offsets[i]));
 			try {
 				filechannel.read(imagedata);
 			} catch (IOException e) {
@@ -198,9 +198,9 @@ public class ShpFileDune2 extends ShpFile<ShpFileHeaderDune2> implements Writabl
 			}
 
 			// Decompress the image data
-			ByteBuffer image = ByteBuffer.allocate(width * height);
+			ByteBuffer image = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(width * height);
 			if (imageheader.isCompressed()) {
-				ByteBuffer uncompressed = ByteBuffer.allocate(imageheader.datasize & 0xffff);
+				ByteBuffer uncompressed = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(imageheader.datasize & 0xffff);
 				CodecUtility.decodeFormat80(imagedata, uncompressed);
 				CodecUtility.decodeFormat2(uncompressed, image);
 			}
@@ -315,7 +315,7 @@ public class ShpFileDune2 extends ShpFile<ShpFileHeaderDune2> implements Writabl
 		for (int i = 0; i < imagefiles.length; i++) {
 			try {
 				try (ImageFile imagefile = imagefiles[i]) {
-                    ByteBuffer imagedata = ByteBuffer.allocate(imagefile.width() * imagefile.height() *
+                    ByteBuffer imagedata = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(imagefile.width() * imagefile.height() *
                             imagefile.format().size);
                     (imagefile instanceof PalettedInternal ?
                             ((PalettedInternal)imagefile).getRawImageData() : imagefile.getImageData())
@@ -358,7 +358,7 @@ public class ShpFileDune2 extends ShpFile<ShpFileHeaderDune2> implements Writabl
 				((PalettedInternal)imagesfile).getRawImageData() : imagesfile.getImagesData())) {
 			ByteBuffer[] images = new ByteBuffer[imagesfile.numImages()];
 			for (int i = 0; i < images.length; i++) {
-				ByteBuffer imagedata = ByteBuffer.allocate(imagesfile.width() * imagesfile.height() *
+				ByteBuffer imagedata = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(imagesfile.width() * imagesfile.height() *
 						imagesfile.format().size);
 				srcimages.read(imagedata);
 				images[i] = (ByteBuffer)imagedata.rewind();
@@ -505,7 +505,7 @@ public class ShpFileDune2 extends ShpFile<ShpFileHeaderDune2> implements Writabl
 		int preoffsetsize = (numimgs + 1) * shpfileheader.offsetsize;
 
 		// Encode each image, update image headers, create image offsets
-		ByteBuffer imageoffsets = ByteBuffer.allocate(preoffsetsize);
+		ByteBuffer imageoffsets = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(preoffsetsize);
 		int offsettotal = preoffsetsize;
 
 		ByteBuffer[] images = new ByteBuffer[numimgs];
@@ -541,7 +541,7 @@ public class ShpFileDune2 extends ShpFile<ShpFileHeaderDune2> implements Writabl
 			// NOTE: Compression with Format80 is skipped for Dune 2 SHP files due
 			//       to my implementation of Format80 compression causing "Memory
 			//       Corrupts!" error messages to come from Dune 2 itself.
-			ByteBuffer image = ByteBuffer.allocate((int)(imagebytes.capacity() * 1.5));
+			ByteBuffer image = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer((int)(imagebytes.capacity() * 1.5));
 			CodecUtility.encodeFormat2(imagebytes, image);
 
 			// Build image header

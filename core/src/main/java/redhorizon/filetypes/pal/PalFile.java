@@ -51,7 +51,7 @@ public class PalFile extends AbstractFile implements PaletteFile {
 		super(name);
 
 		// Fills the palette data
-		palettedata = ByteBuffer.allocate(768);
+		palettedata = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(768);
 		try {
 			bytechannel.read(palettedata);
 		} catch (IOException e) {

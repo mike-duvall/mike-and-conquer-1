@@ -74,7 +74,7 @@ public class ShpFileHeaderCNC extends ShpFileHeader {
 	@Override
 	ByteBuffer toByteBuffer() {
 
-		ByteBuffer header = ByteBuffer.allocate(HEADER_SIZE);
+		ByteBuffer header = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(HEADER_SIZE);
 		header.putShort(numimages)
 			  .putShort(unknown1)
 			  .putShort(unknown2)

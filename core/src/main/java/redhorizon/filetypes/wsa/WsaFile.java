@@ -169,7 +169,7 @@ public abstract class WsaFile<H extends WsaFileHeader> extends AbstractFile impl
 		ByteBuffer[] images = new ByteBuffer[imagefiles.length];
 		for (int i = 0; i < images.length; i++) {
 			ImageFile imagefile = imagefiles[i];
-			ByteBuffer imagedata = ByteBuffer.allocate(imagefile.width() * imagefile.height() *
+			ByteBuffer imagedata = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(imagefile.width() * imagefile.height() *
 					imagefile.format().size);
 			try {
 				(imagefile instanceof PalettedInternal ?

@@ -62,7 +62,7 @@ public class ShpFileCNC extends ShpFile<ShpFileHeaderCNC> implements AnimationFi
 
 		try {
 			// Construct file header
-			ByteBuffer headerbytes = ByteBuffer.allocate(ShpFileHeaderCNC.HEADER_SIZE);
+			ByteBuffer headerbytes = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(ShpFileHeaderCNC.HEADER_SIZE);
 			try {
 				bytechannel.read(headerbytes);
 			} catch (IOException e) {
@@ -74,11 +74,12 @@ public class ShpFileCNC extends ShpFile<ShpFileHeaderCNC> implements AnimationFi
 			// numImages() + 2 for the 0 offset and EOF pointer
 			ShpImageOffsetCNC[] offsets = new ShpImageOffsetCNC[numImages() + 2];
 			for (int i = 0; i < offsets.length; i++) {
-				ByteBuffer offsetbytes = ByteBuffer.allocate(ShpImageOffsetCNC.OFFSET_SIZE);
+				ByteBuffer offsetbytes = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(ShpImageOffsetCNC.OFFSET_SIZE);
 				try {
 					bytechannel.read(offsetbytes);
 				} catch (IOException e) {
 					throw new RuntimeException(e);
+
 				}
 				offsets[i] = new ShpImageOffsetCNC((ByteBuffer)offsetbytes.rewind());
 			}
@@ -91,14 +92,14 @@ public class ShpFileCNC extends ShpFile<ShpFileHeaderCNC> implements AnimationFi
 				ShpImageOffsetCNC imageoffset = offsets[i];
 
 				// Format conversion buffers
-				ByteBuffer sourcebytes = ByteBuffer.allocate(offsets[i + 1].offset - imageoffset.offset);
+				ByteBuffer sourcebytes = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(offsets[i + 1].offset - imageoffset.offset);
 				try {
 					bytechannel.read(sourcebytes);
 				} catch (IOException e) {
 					throw new RuntimeException(e);
 				}
 				sourcebytes.rewind();
-				ByteBuffer destbytes = ByteBuffer.allocate(width() * height());
+				ByteBuffer destbytes = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(width() * height());
 
 				switch (imageoffset.offsetformat) {
 
@@ -271,7 +272,7 @@ public class ShpFileCNC extends ShpFile<ShpFileHeaderCNC> implements AnimationFi
 			// Encode each image
 			ByteBuffer[] images = new ByteBuffer[numimages];
 			for (int i = 0; i < images.length; i++) {
-				ByteBuffer image = ByteBuffer.allocate(shpimages[i].capacity());
+				ByteBuffer image = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(shpimages[i].capacity());
 				CodecUtility.encodeFormat80(shpimages[i], image);
 				images[i] = image;
 			}

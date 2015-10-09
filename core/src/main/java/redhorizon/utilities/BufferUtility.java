@@ -47,7 +47,7 @@ public class BufferUtility {
 		ArrayList<ByteBuffer> bytes = new ArrayList<>();
 		int size = 0;
 		while (true) {
-			ByteBuffer bytedata = ByteBuffer.allocate(1024);
+			ByteBuffer bytedata = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(1024);
 			int read = 0;
 			try {
 				read = bytechannel.read(bytedata);
@@ -63,7 +63,7 @@ public class BufferUtility {
 			}
 		}
 
-		ByteBuffer data = ByteBuffer.allocate(size);
+		ByteBuffer data = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(size);
 		for (ByteBuffer bytedata: bytes) {
 			data.put(bytedata);
 		}

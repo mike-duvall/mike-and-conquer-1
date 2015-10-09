@@ -48,13 +48,13 @@ public class PackData implements Decoder {
 	public void decode(ByteBuffer source, ByteBuffer dest, ByteBuffer... extra) {
 
 		// Decode base64 data into standard binary
-		ByteBuffer mapbytes2 = ByteBuffer.allocate(8192 * chunks);
+		ByteBuffer mapbytes2 = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(8192 * chunks);
 		base64.decode(source, mapbytes2);
 
 		// Decode pack data, 'chunks' number of chunks
 		ByteBuffer[] mapchunks = new ByteBuffer[chunks];
 		for (int i = 0; i < chunks; i++) {
-			mapchunks[i] = ByteBuffer.allocate(8192);
+			mapchunks[i] = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(8192);
 		}
 
 		for (int i = 0, pos = 0; i < chunks; i++) {

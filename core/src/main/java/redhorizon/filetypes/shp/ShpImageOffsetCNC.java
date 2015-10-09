@@ -76,7 +76,7 @@ public class ShpImageOffsetCNC {
 	 */
 	ByteBuffer toByteBuffer() {
 
-		ByteBuffer offsetbytes = ByteBuffer.allocate(OFFSET_SIZE);
+		ByteBuffer offsetbytes = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(OFFSET_SIZE);
 		offsetbytes.putInt(offset | (offsetformat << 24))
 				   .putInt(refoff | (refoffformat << 24))
 				   .rewind();

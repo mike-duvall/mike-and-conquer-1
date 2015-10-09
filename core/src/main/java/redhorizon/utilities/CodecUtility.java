@@ -102,8 +102,8 @@ public class CodecUtility {
 	 */
 	public static void decode16bitIMAADPCM(ByteBuffer source, ByteBuffer dest, int[] update) {
 
-		ByteBuffer index  = ByteBuffer.allocate(4).putInt(0, update[0]);
-		ByteBuffer sample = ByteBuffer.allocate(4).putInt(0, update[1]);
+		ByteBuffer index  = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(4).putInt(0, update[0]);
+		ByteBuffer sample = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(4).putInt(0, update[1]);
 
 		imaadpcm16bit.decode(source, dest, index, sample);
 

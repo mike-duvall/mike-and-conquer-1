@@ -208,9 +208,9 @@ public class ImageUtility {
 
 		ReadableByteChannel imagesdata = imagesfile.getImagesData();
 		for (int i = 0; i < images.length; i++) {
-			ByteBuffer imagedata = ByteBuffer.allocate(imagesfile.width() * imagesfile.height());
+			ByteBuffer imagedata = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(imagesfile.width() * imagesfile.height());
 			if (imagesfile instanceof Paletted) {
-				ByteBuffer rawimage = ByteBuffer.allocate(width * height);
+				ByteBuffer rawimage = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(width * height);
 				try {
 					imagesdata.read(rawimage);
 				} catch (IOException e) {
@@ -267,7 +267,7 @@ public class ImageUtility {
 
 		int compilewidth = maxwidth * numimgshor;
 		int compileheight = maxheight * numimgsver;
-		ByteBuffer compilation = ByteBuffer.allocate(format.size * compilewidth * compileheight);
+		ByteBuffer compilation = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(format.size * compilewidth * compileheight);
 
 		// For each image vertically
 		for (int i = 0, y = 0; y < numimgsver; y++) {
@@ -369,7 +369,7 @@ public class ImageUtility {
 		// Create split images
 		ByteBuffer[] compilation = new ByteBuffer[numimages];
 		for (int i = 0, row = 0, col = 0, numimghor = srcwidth / splitwidth; i < numimages; ) {
-			ByteBuffer splitimage = ByteBuffer.allocate(splitwidth * splitheight * format.size);
+			ByteBuffer splitimage = com.mikeduvall.redhorizon.util.ByteBufferFactory.createLittleEndianByteBuffer(splitwidth * splitheight * format.size);
 
 			for (int y = 0; y < splitheight; y++) {
 				srcbytes.position((row + col) + (y * srcwidth));
