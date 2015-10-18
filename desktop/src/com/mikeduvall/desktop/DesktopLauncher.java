@@ -2,6 +2,7 @@ package com.mikeduvall.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.mikeduvall.GraphicsDemo;
 import com.mikeduvall.MikeAndConquerGame;
 import com.mikeduvall.ReadFromFileAndDrawToScreen;
 
@@ -16,6 +17,7 @@ public class DesktopLauncher {
 
 //		new LwjglApplication(new MikeAndConquerGame(), config);
 		new LwjglApplication(new ReadFromFileAndDrawToScreen(), config);
+//		new LwjglApplication(new GraphicsDemo(), config);
 
 
 	}

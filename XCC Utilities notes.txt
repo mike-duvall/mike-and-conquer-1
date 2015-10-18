@@ -1,0 +1,8 @@
+
+
+To explore and play around with the Command and Conquer MIX files:
+
+Run the XCC Mixer program
+Open conquer.mix
+
+It will have the e1.shp file

@@ -17,8 +17,8 @@ import java.nio.channels.FileChannel;
 
 public class ReadFromFileAndDrawToScreen extends ApplicationAdapter {
 	SpriteBatch batch;
-	Pixmap redPixMap;
-	Texture redCircleTexture;
+	Pixmap minigunnerPixMap;
+	Texture minigunnerTexture;
 	int x = 100;
 	int y = 100;
 	int screenHeight;
@@ -40,32 +40,43 @@ public class ReadFromFileAndDrawToScreen extends ApplicationAdapter {
 		ByteBuffer[] byteBuffers = shpFileCNC.getRawImagesData();
 		ByteBuffer byteBuffer0 = byteBuffers[0];
 
+//        minigunnerPixMap = new Pixmap(50, 39, Pixmap.Format.RGBA8888);
+        minigunnerPixMap = new Pixmap(50, 39, Pixmap.Format.RGBA4444);
+//        minigunnerPixMap = new Pixmap(50, 39, Pixmap.Format.RGB888);
 
-        redPixMap = new Pixmap(50, 39, Pixmap.Format.RGBA8888);
 		int currentIndex = 0;
 
 		for(int y = 0; y < 39; y++) {
 			for(int x = 0; x < 50; x++) {
-//                if(currentIndex > 1948) {
-//                    continue;
-//                }
                 if(!byteBuffer0.hasRemaining()) {
                     continue;
                 }
 
                 System.out.println(currentIndex);
-//				char nextChar = byteBuffer0.getChar(currentIndex);
                 byte nextByte = byteBuffer0.get(currentIndex);
 				if(nextByte != 0) {
-					redPixMap.drawPixel(x, y, Color.rgb888(100, 100, 100));
-				}
+//					minigunnerPixMap.drawPixel(x, y, Color.rgb888(0, 66, 0));
+                    int r = 255;
+                    int g = 255;
+                    int b = 255;
+                    int alpha = 255;
 
+//                    public static final Color WHITE = new Color(1, 1, 1, 1);
+//                    public static final Color BLACK = new Color(0, 0, 0, 1);
+//                    public static final Color RED = new Color(1, 0, 0, 1);
+//                    public static final Color GREEN = new Color(0, 1, 0, 1);
+
+                    Color color = new Color(1, 1, 0, 1);
+
+                    minigunnerPixMap.setColor(color);
+
+                    minigunnerPixMap.drawPixel(x, y );
+
+				}
 				currentIndex++;
 			}
 		}
-
-		redCircleTexture = new Texture(redPixMap);
-
+		minigunnerTexture = new Texture(minigunnerPixMap);
 	}
 
 	@Override
@@ -82,12 +93,15 @@ public class ReadFromFileAndDrawToScreen extends ApplicationAdapter {
 	}
 
 	private void handleDrawing() {
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
 		batch.enableBlending();
 		batch.begin();
-		batch.draw(redCircleTexture, 600, 440);
+		batch.draw(minigunnerTexture, 600, 440);
 		batch.end();
+
+
 	}
 
 	private void handleInput() {
@@ -99,8 +113,8 @@ public class ReadFromFileAndDrawToScreen extends ApplicationAdapter {
 
 
 		if( leftMouseButtonPressed) {
-			x = Gdx.input.getX() - (redCircleTexture.getWidth() / 2);
-			y = screenHeight - Gdx.input.getY() - (redCircleTexture.getHeight() / 2);
+			x = Gdx.input.getX() - (minigunnerTexture.getWidth() / 2);
+			y = screenHeight - Gdx.input.getY() - (minigunnerTexture.getHeight() / 2);
 		}
 	}
 }
