@@ -76,6 +76,10 @@ public abstract class ShpFile<H extends ShpFileHeader> extends AbstractFile
 		return new ReadableByteChannelAdapter(shpimages);
 	}
 
+	public ByteBuffer[] getRawImagesData() {
+		return shpimages;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
