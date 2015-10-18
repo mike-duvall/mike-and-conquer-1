@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import redhorizon.filetypes.shp.ShpFileCNC;
 
@@ -15,7 +14,6 @@ import java.io.FileNotFoundException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
-import java.nio.channels.ReadableByteChannel;
 
 public class ReadFromFileAndDrawToScreen extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -39,32 +37,26 @@ public class ReadFromFileAndDrawToScreen extends ApplicationAdapter {
 		}
 		FileChannel inChannel = aFile.getChannel();
 		ShpFileCNC shpFileCNC = new ShpFileCNC("/home/mduvall/workspace/mike-and-conquer/core/assets/test.file", inChannel);
-//		ReadableByteChannel readableByteChannel = shpFileCNC.getImagesData();
 		ByteBuffer[] byteBuffers = shpFileCNC.getRawImagesData();
 		ByteBuffer byteBuffer0 = byteBuffers[0];
 
 
         redPixMap = new Pixmap(50, 39, Pixmap.Format.RGBA8888);
-//		for(int x = 0; x < 20; x++) {
-//			redPixMap.drawPixel(x, 10, Color.rgb888(100,100,100));
-//		}
 		int currentIndex = 0;
 
-//		for(int x = 0; x < 49; x++) {
-//			for(int y = 0; y < 38; y++) {
-//				char nextChar = byteBuffer0.getChar(currentIndex);
-//				if(nextChar != 0) {
-//					redPixMap.drawPixel(x, y, Color.rgb888(100, 100, 100));
-//				}
-//
-//				currentIndex++;
-//			}
-//		}
-
-		for(int y = 0; y < 38; y++) {
+		for(int y = 0; y < 39; y++) {
 			for(int x = 0; x < 50; x++) {
-				char nextChar = byteBuffer0.getChar(currentIndex);
-				if(nextChar != 0) {
+//                if(currentIndex > 1948) {
+//                    continue;
+//                }
+                if(!byteBuffer0.hasRemaining()) {
+                    continue;
+                }
+
+                System.out.println(currentIndex);
+//				char nextChar = byteBuffer0.getChar(currentIndex);
+                byte nextByte = byteBuffer0.get(currentIndex);
+				if(nextByte != 0) {
 					redPixMap.drawPixel(x, y, Color.rgb888(100, 100, 100));
 				}
 
@@ -94,7 +86,6 @@ public class ReadFromFileAndDrawToScreen extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.enableBlending();
 		batch.begin();
-//		batch.draw(redCircleTexture, x, y);
 		batch.draw(redCircleTexture, 600, 440);
 		batch.end();
 	}
