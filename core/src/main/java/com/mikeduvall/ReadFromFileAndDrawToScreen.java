@@ -66,7 +66,8 @@ public class ReadFromFileAndDrawToScreen extends ApplicationAdapter {
 //                    public static final Color RED = new Color(1, 0, 0, 1);
 //                    public static final Color GREEN = new Color(0, 1, 0, 1);
 
-                    Color color = new Color(1, 1, 0, 1);
+//                    Color color = new Color(0.33333f, 1, 1, 1);
+					Color color = new Color(1,1, 0.33333f,  1);
 
                     minigunnerPixMap.setColor(color);
 
