@@ -3,14 +3,18 @@ package com.mikeduvall;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mikeduvall.convert.PaletteEntry;
+import com.mikeduvall.convert.PaletteFile;
 import redhorizon.filetypes.shp.ShpFileCNC;
 
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -27,6 +31,12 @@ public class ReadFromFileAndDrawToScreen extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+
+
+		String filename = "/home/mduvall/workspace/mike-and-conquer/core/assets/temperat.pal";
+		FileHandle fileHandle = Gdx.files.internal(filename);
+		InputStream is = fileHandle.read(1000);
+		PaletteFile paletteFile = new PaletteFile(is);
 
 
 		RandomAccessFile aFile = null;
@@ -55,19 +65,22 @@ public class ReadFromFileAndDrawToScreen extends ApplicationAdapter {
                 System.out.println(currentIndex);
                 byte nextByte = byteBuffer0.get(currentIndex);
 				if(nextByte != 0) {
-//					minigunnerPixMap.drawPixel(x, y, Color.rgb888(0, 66, 0));
-                    int r = 255;
-                    int g = 255;
-                    int b = 255;
-                    int alpha = 255;
-
 //                    public static final Color WHITE = new Color(1, 1, 1, 1);
 //                    public static final Color BLACK = new Color(0, 0, 0, 1);
 //                    public static final Color RED = new Color(1, 0, 0, 1);
 //                    public static final Color GREEN = new Color(0, 1, 0, 1);
 
 //                    Color color = new Color(0.33333f, 1, 1, 1);
-					Color color = new Color(1,1, 0.33333f,  1);
+//					Color color = new Color(1,1, 0.33333f,  1);
+					int index = Byte.toUnsignedInt(nextByte);
+
+					PaletteEntry paletteEntry = paletteFile.getPaletteEntries().get(index);
+
+					float red = paletteEntry.getRed() / 63.0f;
+					float green = paletteEntry.getGreen() / 63.0f;
+					float blue = paletteEntry.getBlue() / 63.0f;
+
+					Color color = new Color(red, green, blue, 1);
 
                     minigunnerPixMap.setColor(color);
 
