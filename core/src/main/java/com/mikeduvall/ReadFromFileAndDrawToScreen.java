@@ -73,6 +73,7 @@ public class ReadFromFileAndDrawToScreen extends ApplicationAdapter {
 //                    Color color = new Color(0.33333f, 1, 1, 1);
 //					Color color = new Color(1,1, 0.33333f,  1);
 					int index = Byte.toUnsignedInt(nextByte);
+//					index += 48;
 
 					PaletteEntry paletteEntry = paletteFile.getPaletteEntries().get(index);
 
