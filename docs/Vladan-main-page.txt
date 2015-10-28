@@ -1,0 +1,58 @@
+
+Vladan's Command & Conquer page
+
+This page is here for hystorical reasons. I haven't updated any of these files in a long time and I'm not planning to. You can now find the C&C file format information on many different sites.
+E-mail
+
+If you have any questions, you can reach me at the following address: e-mail shown as image to guard against spammers (you'll have to type it yourself).
+Mix Manager
+
+Mix Manager is a utility for the game Command & Conquer.
+
+It allows you to browse through MIX files and view the files inside of them.
+
+You can also use it to create new MIX files or modify the existing ones by replacing, adding and deleting files. It also comes with a set of utilities that let you convert the graphics files used by C&C. This way you can also customize the graphics.
+
+You can download Mix Manager 3.51 here.
+
+Please note that Mix Manager is a DOS program. It may or may not work in Windows. If you want to try it in Windows, you must run it from the command line.
+Command & Conquer information
+Command & Conquer File Formats
+
+Here are a few documents on file formats used by C&C. They are meant for programmers that want to make their own editors and utilities.
+
+    Command & Conquer Maps: Explains the file formats used for the maps
+    Command & Conquer File Formats: Explains many other formats
+    VQA Files: VQA File Format explained by Aaron Glover
+    The AUD file format: Explains AUD files and the IMA-ADPCM compression/decompression
+
+If you are a programmer and would like some C source code for IMA-ADPCM compression/decompression, send me an e-mail.
+ID coding algorithm
+
+This algorithm is used to compute the 32-bit ID numbers that are used in MIX files instead of filenames.
+
+The ID is computed from the filename, but it's impossible to work out the filename from the ID. In Mix Manager I solved this problem by keeping a list of all filenames that are used in C&C and then checking each one to see whether it gives the ID I'm interested in.
+
+Here's some source code that will compute the ID form the filename:
+
+    Pascal Source
+    C Source
+
+I wish to thank Benny Den Trooster for his help on working out the ID coding algorithm.
+The AUD Conversion Utilities
+
+This pair of utilities will let you convert AUD files to WAV format and vice versa.
+
+Use Mix Manager to extract the AUD files from the MIX files, and to replace them with new ones. You can also put the AUD files in the C&C directory if you know the right names (shown in Mix Manager).
+
+You can download version 1.2 of the utilities here.
+
+The archive contains the following utilities:
+
+    AUD2WAV : converts an AUD file to WAV format.
+    WAV2AUD : converts a WAV file to AUD format.
+    AUDINFO : displays info about specified AUD file(s).
+
+Please note that these are DOS programs. They may or may not work in Windows. If you want to try them in Windows, you must run them from the command line.
+
+© 1996-1999,2009 Vladan Bato
