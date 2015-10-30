@@ -50,8 +50,8 @@ public class ReadFromFileAndDrawToScreen extends ApplicationAdapter {
 		ByteBuffer[] byteBuffers = shpFileCNC.getRawImagesData();
 		ByteBuffer byteBuffer0 = byteBuffers[0];
 
-//        minigunnerPixMap = new Pixmap(50, 39, Pixmap.Format.RGBA8888);
-        minigunnerPixMap = new Pixmap(50, 39, Pixmap.Format.RGBA4444);
+        minigunnerPixMap = new Pixmap(50, 39, Pixmap.Format.RGBA8888);
+//        minigunnerPixMap = new Pixmap(50, 39, Pixmap.Format.RGBA4444);
 //        minigunnerPixMap = new Pixmap(50, 39, Pixmap.Format.RGB888);
 
 		int currentIndex = 0;
@@ -62,21 +62,19 @@ public class ReadFromFileAndDrawToScreen extends ApplicationAdapter {
                     continue;
                 }
 
-                System.out.println(currentIndex);
                 byte nextByte = byteBuffer0.get(currentIndex);
 				if(nextByte != 0) {
-//                    public static final Color WHITE = new Color(1, 1, 1, 1);
-//                    public static final Color BLACK = new Color(0, 0, 0, 1);
-//                    public static final Color RED = new Color(1, 0, 0, 1);
-//                    public static final Color GREEN = new Color(0, 1, 0, 1);
-
-//                    Color color = new Color(0.33333f, 1, 1, 1);
-//					Color color = new Color(1,1, 0.33333f,  1);
 					int index = Byte.toUnsignedInt(nextByte);
-//					index += 48;
 
 					PaletteEntry paletteEntry = paletteFile.getPaletteEntries().get(index);
 
+
+					if( paletteEntry.getRed() != 0 ) {
+						int xxx = 3;
+						System.out.println("red(decimal) = " + paletteEntry.getRed());
+						System.out.println("red(hex) = " + hex(paletteEntry.getRed()));
+
+					}
 					float red = paletteEntry.getRed() / 63.0f;
 					float green = paletteEntry.getGreen() / 63.0f;
 					float blue = paletteEntry.getBlue() / 63.0f;
@@ -92,6 +90,12 @@ public class ReadFromFileAndDrawToScreen extends ApplicationAdapter {
 			}
 		}
 		minigunnerTexture = new Texture(minigunnerPixMap);
+	}
+
+
+	public static String hex(int n) {
+		// call toUpperCase() if that's required
+		return String.format("0x%8s", Integer.toHexString(n)).replace(' ', '0');
 	}
 
 	@Override
