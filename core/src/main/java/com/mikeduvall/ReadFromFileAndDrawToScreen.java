@@ -66,15 +66,10 @@ public class ReadFromFileAndDrawToScreen extends ApplicationAdapter {
 				if(nextByte != 0) {
 					int index = Byte.toUnsignedInt(nextByte);
 
+					index = mapIndexToNod(index);
+					System.out.println("index(decimal) = " + index);
 					PaletteEntry paletteEntry = paletteFile.getPaletteEntries().get(index);
 
-
-					if( paletteEntry.getRed() != 0 ) {
-						int xxx = 3;
-						System.out.println("red(decimal) = " + paletteEntry.getRed());
-						System.out.println("red(hex) = " + hex(paletteEntry.getRed()));
-
-					}
 					float red = paletteEntry.getRed() / 63.0f;
 					float green = paletteEntry.getGreen() / 63.0f;
 					float blue = paletteEntry.getBlue() / 63.0f;
@@ -90,6 +85,67 @@ public class ReadFromFileAndDrawToScreen extends ApplicationAdapter {
 			}
 		}
 		minigunnerTexture = new Texture(minigunnerPixMap);
+	}
+
+	private int mapIndexToNod(int index) {
+//		switch(index) {
+//
+//		}
+
+//		RemapIndexes=161,200,201,202,204,205,206,12,201,202,203,204,205,115,198,114
+
+		if(index == 176)
+			return 161;
+
+		if(index == 177)
+			return 200;
+
+
+		if(index == 178)
+			return 201;
+
+		if(index == 179)
+			return 202;
+
+		if(index == 180)
+			return 204;
+
+		if(index == 181)
+			return 205;
+
+		if(index == 182)
+			return 206;
+
+		if(index == 183)
+			return 12;
+
+		if(index == 184)
+			return 201;
+
+		if(index == 185)
+			return 202;
+
+		if(index == 186)
+			return 203;
+
+		if(index == 187)
+			return 204;
+
+		if(index == 188)
+			return 205;
+
+		if(index == 189)
+			return 115;
+
+		if(index == 190)
+			return 198;
+
+		if(index == 191)
+			return 114;
+
+
+		return index;
+
 	}
 
 

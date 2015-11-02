@@ -55,7 +55,7 @@ class ShpTDLoaderSpec extends Specification {
         List<ISpriteFrame> frames = shpTdLoader.getiSpriteFrameList();
         assert frames.size > 0
         ISpriteFrame firstFrame = frames.get(0)
-        firstFrame.fileOffset == 666
+//        firstFrame.fileOffset == 666
 //        firstFrame.format == 666
 //        firstFrame.refOffset == 666
 //        firstFrame.refFormat == 666

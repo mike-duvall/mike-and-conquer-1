@@ -30,7 +30,7 @@ public class PaletteFile {
 
     }
 
-    public ByteBuffer readBytes() {
+    private  ByteBuffer readBytes() {
         try {
 
             byte[] byteArray = IOUtils.toByteArray(inputStream);

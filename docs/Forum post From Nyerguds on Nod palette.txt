@@ -1,0 +1,28 @@
+
+Here's something to get started. And I don't mean just on the colours.
+
+http://nyerguds.arsaneus-design.com/cnc95upd/inirules/
+
+The colors.ini file is my own design; colours don't actually get handled as colour scheme objects like that in the game (or, didn't, before my patch).
+Nonetheless, the remapping values in there are the game's originals. I did add a few, mind you; the last ones, starting from DarkGrayPalette, were added by me,
+and not originally in the game.
+
+As for how this is applied, that's simple. To perform a remap the game needs a remapping table of 256 bytes.
+For every graphic drawn on screen, it goes over the image data pixel by pixel and replaces each value (being, a palette offset) by the
+ remapped palette offset found at the index of that pixel's value on the table. This system is also used for special colour effects in the game,
+ like shroud edges, movement and targeting flashes, shadow and stealth darkening, etc(http://cnc-comm.com/community/index.php?topic=3048.0),
+ but for the house remap case, only the range at C0-CF is changed, simply by having a table where each spot in the table has its own index as value,
+ except for that C0-CF range.
+
+Additional note: "Nod" is a name, not an acronym. So it's "Nod", not "NOD" :engie:
+
+
+
+*******************
+
+If you're planning to use these aforementioned other filters the game has (the .mrf fading tables), this might be handy, too:
+http://cnc-comm.com/community/index.php?topic=3084.msg21280#msg21280
+
+It helps to understand how stuff like the shroud edge and movement targeting flash SHP files
+(and, heck, the green colour for the unit shadow) are handled by the game.
+(Though it might be easier to apply the effects themselves from code instead of from these tables, like RA1 does)
