@@ -1,5 +1,6 @@
 /*
  * Copyright 2012, Emanuel Rabina (http://www.ultraq.net.nz/)
+ * Modifications by Mike DuVall
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
