@@ -2,17 +2,22 @@
 
 My attempt at building a clone of the Original 1995 Command and Conquer
 
+##To run, do:
 
+* ./gradlew run
+
+
+##Current status
 Not much working yet....
-
-To run, do:
-
-./gradlew run
+Currently just displaying a single minigunner in Nod colors
 
 
-Currently investigating use of libGDX:  https://github.com/libgdx/libgdx
+##Next milestone
+* Clean up existing code
+* Display GDI and Nod minigunners
+* Add ability to select and move GDI minigunner
 
-More to come.....
+
 
 
 
