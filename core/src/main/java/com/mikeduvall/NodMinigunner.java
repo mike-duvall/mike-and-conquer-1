@@ -16,7 +16,7 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
-public class GDIMinigunner {
+public class NodMinigunner {
 
     int x;
     int y;
@@ -25,7 +25,7 @@ public class GDIMinigunner {
 	Texture minigunnerTexture;
 
 
-    public GDIMinigunner() {
+    public NodMinigunner() {
 
         String filename = "/home/mduvall/workspace/mike-and-conquer/core/assets/temperat.pal";
         FileHandle fileHandle = Gdx.files.internal(filename);
@@ -58,7 +58,7 @@ public class GDIMinigunner {
                 if(nextByte != 0) {
                     int index = Byte.toUnsignedInt(nextByte);
 
-//                    index = mapIndexToNod(index);
+                    index = mapIndexToNod(index);
 //                    System.out.println("index(decimal) = " + index);
                     PaletteEntry paletteEntry = paletteFile.getPaletteEntries().get(index);
 

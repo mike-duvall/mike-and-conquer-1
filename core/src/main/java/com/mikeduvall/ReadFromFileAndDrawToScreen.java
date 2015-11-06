@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class ReadFromFileAndDrawToScreen extends ApplicationAdapter {
 	SpriteBatch batch;
 	GDIMinigunner gdiMinigunner;
+	NodMinigunner nodMinigunner;
 	int x = 100;
 	int y = 100;
 	int screenHeight;
@@ -19,6 +20,14 @@ public class ReadFromFileAndDrawToScreen extends ApplicationAdapter {
 		batch = new SpriteBatch();
 
 		gdiMinigunner = new GDIMinigunner();
+		gdiMinigunner.setX(600);
+		gdiMinigunner.setY(440);
+
+		nodMinigunner = new NodMinigunner();
+		nodMinigunner.setX(800);
+		nodMinigunner.setY(440);
+
+
 
 	}
 
@@ -47,7 +56,8 @@ public class ReadFromFileAndDrawToScreen extends ApplicationAdapter {
 
 		batch.enableBlending();
 		batch.begin();
-		gdiMinigunner.draw(batch, 600, 440);
+		gdiMinigunner.draw(batch);
+		nodMinigunner.draw(batch);
 		batch.end();
 
 
