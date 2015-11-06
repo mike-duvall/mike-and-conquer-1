@@ -5,6 +5,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mikeduvall.convert.PaletteEntry;
 import com.mikeduvall.convert.PaletteFile;
@@ -18,11 +19,9 @@ import java.nio.channels.FileChannel;
 
 public class Minigunner {
 
-    int x;
-    int y;
-
     Pixmap minigunnerPixMap;
     Texture minigunnerTexture;
+    Sprite minigunenrSprite;
 
 
     public Minigunner() {
@@ -77,27 +76,30 @@ public class Minigunner {
             }
         }
         minigunnerTexture = new Texture(minigunnerPixMap);
+        minigunenrSprite = new Sprite(minigunnerTexture);
+
 
     }
 
-    public int getX() {
-        return x;
+    public float getX() {
+        return minigunenrSprite.getX();
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void setX(float x) {
+        minigunenrSprite.setX(x);
     }
 
-    public int getY() {
-        return y;
+    public float getY() {
+        return minigunenrSprite.getY();
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public void setY(float y) {
+        minigunenrSprite.setY(y);
     }
 
     public void draw(SpriteBatch batch) {
-        batch.draw(minigunnerTexture, this.getX(), this.getY());
+        minigunenrSprite.setScale(4.0f,4.0f);
+        minigunenrSprite.draw(batch);
     }
 
 
