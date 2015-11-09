@@ -31,12 +31,12 @@ public class GraphicsDemo implements ApplicationListener {
 
         RandomAccessFile aFile = null;
         try {
-            aFile = new RandomAccessFile("/home/mduvall/workspace/mike-and-conquer/core/assets/e1.shp", "rw");
+            aFile = new RandomAccessFile("core/assets/e1.shp", "rw");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
         FileChannel inChannel = aFile.getChannel();
-        ShpFileCNC shpFileCNC = new ShpFileCNC("/home/mduvall/workspace/mike-and-conquer/core/assets/test.file", inChannel);
+        ShpFileCNC shpFileCNC = new ShpFileCNC("core/assets/test.file", inChannel);
         ByteBuffer[] byteBuffers = shpFileCNC.getRawImagesData();
         ByteBuffer byteBuffer0 = byteBuffers[0];
 
