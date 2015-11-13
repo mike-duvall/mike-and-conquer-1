@@ -1,6 +1,5 @@
 package com.mikeduvall;
 
-import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
@@ -18,14 +17,14 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
-public class Minigunner {
+public class Selection {
 
-    Pixmap minigunnerPixMap;
-    Texture minigunnerTexture;
-    Sprite minigunenrSprite;
+    Pixmap pixmap;
+    Texture texture;
+    Sprite sprite;
 
 
-    public Minigunner() {
+    public Selection() {
 
         String filename = "temperat.pal";
         FileHandle fileHandle = Gdx.files.internal(filename);
@@ -35,21 +34,24 @@ public class Minigunner {
 
         RandomAccessFile aFile = null;
         try {
-            aFile = new RandomAccessFile("e1.shp", "rw");
+            aFile = new RandomAccessFile("mouse.shp", "rw");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
         FileChannel inChannel = aFile.getChannel();
-        ShpFileCNC shpFileCNC = new ShpFileCNC("dummyfilename", inChannel);
+        ShpFileCNC shpFileCNC = new ShpFileCNC("dummy", inChannel);
         ByteBuffer[] byteBuffers = shpFileCNC.getRawImagesData();
         ByteBuffer byteBuffer0 = byteBuffers[0];
 
-        minigunnerPixMap = new Pixmap(50, 39, Pixmap.Format.RGBA8888);
+        int width = shpFileCNC.width();
+        int height = shpFileCNC.height();
+
+        pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
 
         int currentIndex = 0;
 
-        for(int y = 0; y < 39; y++) {
-            for(int x = 0; x < 50; x++) {
+        for(int y = 0; y < height; y++) {
+            for(int x = 0; x < width; x++) {
                 if(!byteBuffer0.hasRemaining()) {
                     continue;
                 }
@@ -59,7 +61,6 @@ public class Minigunner {
                     int index = Byte.toUnsignedInt(nextByte);
 
                     index = mapColorIndex(index);
-//                    System.out.println("index(decimal) = " + index);
                     PaletteEntry paletteEntry = paletteFile.getPaletteEntries().get(index);
 
                     float red = paletteEntry.getRed() / 63.0f;
@@ -68,39 +69,39 @@ public class Minigunner {
 
                     Color color = new Color(red, green, blue, 1);
 
-                    minigunnerPixMap.setColor(color);
+                    pixmap.setColor(color);
 
-                    minigunnerPixMap.drawPixel(x, y );
+                    pixmap.drawPixel(x, y );
 
                 }
                 currentIndex++;
             }
         }
-        minigunnerTexture = new Texture(minigunnerPixMap);
-        minigunenrSprite = new Sprite(minigunnerTexture);
+        texture = new Texture(pixmap);
+        sprite = new Sprite(texture);
 
 
     }
 
     public float getX() {
-        return minigunenrSprite.getX();
+        return sprite.getX();
     }
 
     public void setX(float x) {
-        minigunenrSprite.setX(x);
+        sprite.setX(x);
     }
 
     public float getY() {
-        return minigunenrSprite.getY();
+        return sprite.getY();
     }
 
     public void setY(float y) {
-        minigunenrSprite.setY(y);
+        sprite.setY(y);
     }
 
     public void draw(SpriteBatch batch) {
-        minigunenrSprite.setScale(4.0f,4.0f);
-        minigunenrSprite.draw(batch);
+        sprite.setScale(4.0f,4.0f);
+        sprite.draw(batch);
     }
 
 

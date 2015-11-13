@@ -1,0 +1,8 @@
+Run ./gradlew idea
+Open the .ipr file
+Link Gradle project files
+Make sure to set Java 8 as the Project wide SDK and language level (they are two separate settings)
+Should be able to run DesktopLauncher as an application
+    * Found that I needed to set mike-and-conquer/core/assets as the Working directory in the launch configuration to get it to read files properly,
+    with the same paths as used when doing ./gradlew run
+    * (I found having the Ant plugin installed seemed to make it want to run it as an Ant task.  Uninstalling the Ant plugin solved that)
