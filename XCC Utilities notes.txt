@@ -6,3 +6,8 @@ Run the XCC Mixer program
 Open conquer.mix
 
 It will have the e1.shp file
+
+
+XCC has a right click, then "Copy as PNG" feature to render the shp file as a series of PNGs.
+THis may be good enough for things like mouse.shp, but for minigunner, it's not good enough,
+because we need to render the minigunner in Nod colors too.
