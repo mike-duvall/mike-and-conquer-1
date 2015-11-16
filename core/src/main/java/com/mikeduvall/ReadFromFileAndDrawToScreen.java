@@ -10,7 +10,7 @@ public class ReadFromFileAndDrawToScreen extends ApplicationAdapter {
 	SpriteBatch batch;
 	GDIMinigunner gdiMinigunner;
 	NodMinigunner nodMinigunner;
-	Selection selection;
+	Pointer pointer;
 	int x = 100;
 	int y = 100;
 	int screenHeight;
@@ -28,9 +28,9 @@ public class ReadFromFileAndDrawToScreen extends ApplicationAdapter {
 		nodMinigunner.setX(800);
 		nodMinigunner.setY(440);
 
-//		selection = new Selection();
-//		selection.setX(600);
-//		selection.setY(440);
+		pointer = new Pointer();
+//		pointer.setX(600);
+//		pointer.setY(440);
 
 
 	}
@@ -62,7 +62,7 @@ public class ReadFromFileAndDrawToScreen extends ApplicationAdapter {
 		batch.begin();
 		gdiMinigunner.draw(batch);
 		nodMinigunner.draw(batch);
-//		selection.draw(batch);
+//		pointer.draw(batch);
 		batch.end();
 
 
