@@ -27,7 +27,6 @@ public class Pointer extends GameObject {
         InputStream is = fileHandle.read(1000);
         PaletteFile paletteFile = new PaletteFile(is);
 
-
         RandomAccessFile aFile = null;
         try {
             aFile = new RandomAccessFile("mouse.shp", "rw");
@@ -47,17 +46,27 @@ public class Pointer extends GameObject {
         Pixmap pixmap = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
         drawByteBufferOnPixMap(pixmap, paletteFile, byteBuffer0, width, height);
         basicPointerPixmap = createScaledPixMap(pixmap, 4);
+        pixmap.dispose();
 
         pixmap = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
         drawByteBufferOnPixMap(pixmap, paletteFile, byteBuffer12, width, height);
         selectionPointerPixmap = createScaledPixMap(pixmap, 4);
-
-
-        Gdx.input.setCursorImage(basicPointerPixmap,0,0);
-//        Gdx.input.setCursorImage(selectionPointerPixmap,0,0);
-        Gdx.input.setCursorPosition(200,200);
         pixmap.dispose();
+
+        activateBasePointer();
+        int currentX = Gdx.input.getX();
+        int currentY = Gdx.input.getY();
+        Gdx.input.setCursorPosition(currentX, currentY);
     }
+
+    public void activateBasePointer() {
+        Gdx.input.setCursorImage(basicPointerPixmap,0,0);
+    }
+
+    public void activateSelectionPointer() {
+        Gdx.input.setCursorImage(selectionPointerPixmap,0,0);
+    }
+
 
     private Pixmap createScaledPixMap(Pixmap basePixmap, int scale) {
         int newWidth = basePixmap.getWidth() * scale;

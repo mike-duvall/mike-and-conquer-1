@@ -62,13 +62,19 @@ public class MikeAndConquerGame extends ApplicationAdapter {
 		batch.begin();
 		gdiMinigunner.draw(batch);
 		nodMinigunner.draw(batch);
-//		pointer.draw(batch);
 		batch.end();
 
 
 	}
 
 	private void handleInput() {
+		if(Gdx.input.getX() > 200 ) {
+			pointer.activateBasePointer();
+		}
+		else {
+			pointer.activateSelectionPointer();
+		}
+
 		boolean leftMouseButtonPressed = Gdx.input.isButtonPressed(Input.Buttons.LEFT);
 		boolean ifEscapeKeyIsPressed = Gdx.input.isKeyPressed(Input.Keys.ESCAPE);
 		if(ifEscapeKeyIsPressed) {
