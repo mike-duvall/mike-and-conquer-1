@@ -14,7 +14,7 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
-public class Pointer {
+public class Pointer extends GameObject {
 
     Pixmap basicPointerPixmap;
     Pixmap selectionPointerPixmap;
@@ -67,62 +67,4 @@ public class Pointer {
         return scaledPixmap;
     }
 
-    private void drawByteBufferOnPixMap(Pixmap pixmap, PaletteFile paletteFile, ByteBuffer byteBuffer0, int width, int height) {
-
-        int currentIndex = 0;
-
-        for(int y = 0; y < height; y++) {
-            for(int x = 0; x < width; x++) {
-                if(!byteBuffer0.hasRemaining()) {
-                    continue;
-                }
-
-                byte nextByte = byteBuffer0.get(currentIndex);
-                if(nextByte != 0) {
-                    int index = Byte.toUnsignedInt(nextByte);
-
-                    index = mapColorIndex(index);
-                    PaletteEntry paletteEntry = paletteFile.getPaletteEntries().get(index);
-
-                    float red = paletteEntry.getRed() / 63.0f;
-                    float green = paletteEntry.getGreen() / 63.0f;
-                    float blue = paletteEntry.getBlue() / 63.0f;
-
-                    Color color = new Color(red, green, blue, 1);
-
-                    pixmap.setColor(color);
-
-                    pixmap.drawPixel(x, y );
-
-                }
-                currentIndex++;
-            }
-        }
-    }
-
-//    public float getX() {
-//        return sprite.getX();
-//    }
-//
-//    public void setX(float x) {
-//        sprite.setX(x);
-//    }
-//
-//    public float getY() {
-//        return sprite.getY();
-//    }
-//
-//    public void setY(float y) {
-//        sprite.setY(y);
-//    }
-//
-//    public void draw(SpriteBatch batch) {
-//        sprite.setScale(4.0f,4.0f);
-//        sprite.draw(batch);
-//    }
-
-
-    protected int mapColorIndex(int index) {
-        return index;
-    }
 }
