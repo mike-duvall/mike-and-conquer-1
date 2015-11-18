@@ -68,11 +68,11 @@ public class MikeAndConquerGame extends ApplicationAdapter {
 	}
 
 	private void handleInput() {
-		if(Gdx.input.getX() > 200 ) {
-			pointer.activateBasePointer();
+		if(pointerIsNearGDIMinigunner() ) {
+			pointer.activateSelectionPointer();
 		}
 		else {
-			pointer.activateSelectionPointer();
+			pointer.activateBasePointer();
 		}
 
 		boolean leftMouseButtonPressed = Gdx.input.isButtonPressed(Input.Buttons.LEFT);
@@ -81,4 +81,10 @@ public class MikeAndConquerGame extends ApplicationAdapter {
 			Gdx.app.exit();
 		}
 	}
+
+	private boolean pointerIsNearGDIMinigunner() {
+		return gdiMinigunner.getMinigunnerSprite().getBoundingRectangle().contains(Gdx.input.getX(), Gdx.input.getY());
+	}
+
+
 }

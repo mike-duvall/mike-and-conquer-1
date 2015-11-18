@@ -54,9 +54,7 @@ public class Pointer extends GameObject {
         pixmap.dispose();
 
         activateBasePointer();
-        int currentX = Gdx.input.getX();
-        int currentY = Gdx.input.getY();
-        Gdx.input.setCursorPosition(currentX, currentY);
+        Gdx.input.setCursorPosition(200, 200);
     }
 
     public void activateBasePointer() {

@@ -19,7 +19,7 @@ public class Minigunner extends GameObject {
 
     Pixmap minigunnerPixMap;
     Texture minigunnerTexture;
-    Sprite minigunenrSprite;
+    Sprite minigunnerSprite;
 
 
     public Minigunner() {
@@ -45,33 +45,33 @@ public class Minigunner extends GameObject {
 
         drawByteBufferOnPixMap(minigunnerPixMap, paletteFile, byteBuffer0, 50, 39 );
         minigunnerTexture = new Texture(minigunnerPixMap);
-        minigunenrSprite = new Sprite(minigunnerTexture);
+        minigunnerSprite = new Sprite(minigunnerTexture);
 
     }
 
     public float getX() {
-        return minigunenrSprite.getX();
+        return minigunnerSprite.getX();
     }
 
     public void setX(float x) {
-        minigunenrSprite.setX(x);
+        minigunnerSprite.setX(x);
     }
 
     public float getY() {
-        return minigunenrSprite.getY();
+        return minigunnerSprite.getY();
     }
 
     public void setY(float y) {
-        minigunenrSprite.setY(y);
+        minigunnerSprite.setY(y);
     }
 
     public void draw(SpriteBatch batch) {
-        minigunenrSprite.setScale(4.0f,4.0f);
-        minigunenrSprite.draw(batch);
+        minigunnerSprite.setScale(4.0f,4.0f);
+        minigunnerSprite.draw(batch);
     }
 
 
-    protected int mapColorIndex(int index) {
-        return index;
+    public Sprite getMinigunnerSprite() {
+        return minigunnerSprite;
     }
 }
