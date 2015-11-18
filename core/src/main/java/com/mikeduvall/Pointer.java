@@ -62,7 +62,7 @@ public class Pointer extends GameObject {
     }
 
     public void activateSelectionPointer() {
-        Gdx.input.setCursorImage(selectionPointerPixmap,0,0);
+        Gdx.input.setCursorImage(selectionPointerPixmap,16,16);
     }
 
 
