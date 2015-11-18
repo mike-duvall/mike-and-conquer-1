@@ -4,12 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mikeduvall.convert.PaletteEntry;
 import com.mikeduvall.convert.PaletteFile;
-import redhorizon.filetypes.shp.ShpFileCNC;
 import redhorizon.filetypes.shp.ShpFileDune2;
 
 import java.io.FileNotFoundException;
@@ -20,9 +16,8 @@ import java.nio.channels.FileChannel;
 
 public class Pointer {
 
-    Pixmap pixmap;
-//    Texture texture;
-//    Sprite sprite;
+    Pixmap basicPointerPixmap;
+    Pixmap selectionPointerPixmap;
 
 
     public Pointer() {
@@ -40,17 +35,39 @@ public class Pointer {
             throw new RuntimeException(e);
         }
         FileChannel inChannel = aFile.getChannel();
-//        ShpFileCNC shpFileCNC = new ShpFileCNC("dummy", inChannel);
         ShpFileDune2 shpFileCNC = new ShpFileDune2("dummy", inChannel);
 
         ByteBuffer[] byteBuffers = shpFileCNC.getRawImagesData();
-//        ByteBuffer byteBuffer0 = byteBuffers[12];
+        ByteBuffer byteBuffer12 = byteBuffers[12];
         ByteBuffer byteBuffer0 = byteBuffers[0];
 
         int width = shpFileCNC.width();
         int height = shpFileCNC.height();
 
+        Pixmap pixmap = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
+        drawByteBufferOnPixMap(pixmap, paletteFile, byteBuffer0, width, height);
+        basicPointerPixmap = createScaledPixMap(pixmap, 4);
+
         pixmap = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
+        drawByteBufferOnPixMap(pixmap, paletteFile, byteBuffer12, width, height);
+        selectionPointerPixmap = createScaledPixMap(pixmap, 4);
+
+
+        Gdx.input.setCursorImage(basicPointerPixmap,0,0);
+//        Gdx.input.setCursorImage(selectionPointerPixmap,0,0);
+        Gdx.input.setCursorPosition(200,200);
+        pixmap.dispose();
+    }
+
+    private Pixmap createScaledPixMap(Pixmap basePixmap, int scale) {
+        int newWidth = basePixmap.getWidth() * scale;
+        int newHeight = basePixmap.getHeight() * scale;
+        Pixmap scaledPixmap = new Pixmap(newWidth, newHeight, basePixmap.getFormat());
+        scaledPixmap.drawPixmap(basePixmap,0,0,basePixmap.getWidth(),basePixmap.getHeight(),0,0,scaledPixmap.getWidth(), scaledPixmap.getHeight());
+        return scaledPixmap;
+    }
+
+    private void drawByteBufferOnPixMap(Pixmap pixmap, PaletteFile paletteFile, ByteBuffer byteBuffer0, int width, int height) {
 
         int currentIndex = 0;
 
@@ -81,17 +98,6 @@ public class Pointer {
                 currentIndex++;
             }
         }
-//        texture = new Texture(pixmap);
-//        sprite = new Sprite(texture);
-
-        Pixmap scaledPixmap = new Pixmap(128, 128, Pixmap.Format.RGBA8888);
-        scaledPixmap.drawPixmap(pixmap,0,0,32,32,0,0,128,128);
-        Gdx.input.setCursorImage(scaledPixmap,0,0);
-        Gdx.input.setCursorPosition(200,200);
-        pixmap.dispose();
-        scaledPixmap.dispose();
-
-
     }
 
 //    public float getX() {
