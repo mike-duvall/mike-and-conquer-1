@@ -5,9 +5,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class MikeAndConquerGame extends ApplicationAdapter {
-	SpriteBatch batch;
+	SpriteBatch spriteBatch;
 	GDIMinigunner gdiMinigunner;
 	NodMinigunner nodMinigunner;
 	Pointer pointer;
@@ -18,7 +19,7 @@ public class MikeAndConquerGame extends ApplicationAdapter {
 
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
+		spriteBatch = new SpriteBatch();
 
 		gdiMinigunner = new GDIMinigunner();
 		gdiMinigunner.setX(600);
@@ -58,11 +59,25 @@ public class MikeAndConquerGame extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		batch.enableBlending();
-		batch.begin();
-		gdiMinigunner.draw(batch);
-		nodMinigunner.draw(batch);
-		batch.end();
+		spriteBatch.enableBlending();
+		spriteBatch.begin();
+		gdiMinigunner.draw(spriteBatch);
+		nodMinigunner.draw(spriteBatch);
+		spriteBatch.end();
+
+//		Gdx.gl.glEnable(GL20.GL_BLEND);
+//		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
+
+		ShapeRenderer shapeRenderer = new ShapeRenderer();
+		shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+		gdiMinigunner.draw(shapeRenderer);
+//        nodMinigunner.draw(shapeRenderer);
+        pointer.draw(shapeRenderer);
+		shapeRenderer.end();
+
+//		Gdx.gl.glDisable(GL20.GL_BLEND);
+
 
 
 	}
@@ -73,6 +88,7 @@ public class MikeAndConquerGame extends ApplicationAdapter {
 		}
 		else {
 			pointer.activateBasePointer();
+//			Gdx.input.setCursorImage(null,0,0);
 		}
 
 		boolean leftMouseButtonPressed = Gdx.input.isButtonPressed(Input.Buttons.LEFT);
@@ -83,7 +99,7 @@ public class MikeAndConquerGame extends ApplicationAdapter {
 	}
 
 	private boolean pointerIsNearGDIMinigunner() {
-		return gdiMinigunner.getMinigunnerSprite().getBoundingRectangle().contains(Gdx.input.getX(), Gdx.input.getY());
+		return gdiMinigunner.getMinigunnerSprite().getBoundingRectangle().contains(Gdx.input.getX(), Gdx.input.getY() - (32 *2 ));
 	}
 
 
