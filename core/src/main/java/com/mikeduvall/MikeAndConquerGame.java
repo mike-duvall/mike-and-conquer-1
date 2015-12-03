@@ -76,6 +76,13 @@ public class MikeAndConquerGame extends ApplicationAdapter {
         pointer.draw(shapeRenderer);
 		shapeRenderer.end();
 
+
+//		shapeRenderer = new ShapeRenderer();
+//		shapeRenderer.begin(ShapeRenderer.ShapeType.Point);
+//		gdiMinigunner.drawOrigin(shapeRenderer);
+//		shapeRenderer.end();
+
+
 //		Gdx.gl.glDisable(GL20.GL_BLEND);
 
 
@@ -91,7 +98,7 @@ public class MikeAndConquerGame extends ApplicationAdapter {
 //			Gdx.input.setCursorImage(null,0,0);
 		}
 
-		boolean leftMouseButtonPressed = Gdx.input.isButtonPressed(Input.Buttons.LEFT);
+//		boolean leftMouseButtonPressed = Gdx.input.isButtonPressed(Input.Buttons.LEFT);
 		boolean ifEscapeKeyIsPressed = Gdx.input.isKeyPressed(Input.Keys.ESCAPE);
 		if(ifEscapeKeyIsPressed) {
 			Gdx.app.exit();
@@ -99,7 +106,10 @@ public class MikeAndConquerGame extends ApplicationAdapter {
 	}
 
 	private boolean pointerIsNearGDIMinigunner() {
-		return gdiMinigunner.getMinigunnerSprite().getBoundingRectangle().contains(Gdx.input.getX(), Gdx.input.getY() - (32 *2 ));
+		int screenHeight = Gdx.graphics.getHeight();
+		return gdiMinigunner.getMinigunnerSprite().getBoundingRectangle().contains(
+				Gdx.input.getX(),
+				screenHeight - Gdx.input.getY());
 	}
 
 

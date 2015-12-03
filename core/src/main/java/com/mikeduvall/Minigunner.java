@@ -45,8 +45,8 @@ public class Minigunner extends GameObject {
         ByteBuffer byteBuffer0 = byteBuffers[0];
 
         minigunnerPixMap = new Pixmap(50, 39, Pixmap.Format.RGBA8888);
-
         drawByteBufferOnPixMap(minigunnerPixMap, paletteFile, byteBuffer0, 50, 39 );
+//        minigunnerPixMap = reducify5(minigunnerPixMap);
         minigunnerTexture = new Texture(minigunnerPixMap);
         minigunnerSprite = new Sprite(minigunnerTexture);
         float originX = minigunnerSprite.getOriginX();
@@ -61,7 +61,8 @@ public class Minigunner extends GameObject {
         int x = 3;
 
 
-        minigunnerSprite.setOrigin(minigunnerSprite.getOriginX(), minigunnerSprite.getOriginY() + 2);
+//        minigunnerSprite.setOrigin(minigunnerSprite.getOriginX(), minigunnerSprite.getOriginY() + 2);
+
 //        Rectangle boundingBox = minigunnerSprite.getBoundingRectangle();
 //        boundingBox.setX(boundingBox.getX() - 5);
 //        int boxSize = 20;
@@ -74,6 +75,82 @@ public class Minigunner extends GameObject {
 //        minigunnerSprite.setBounds(boundsLeft, boundsRight, boundsTop, boundsBottom);
 
     }
+
+    private Pixmap reducify1(Pixmap minigunnerPixMap) {
+        Pixmap newPixmap = new Pixmap(30, minigunnerPixMap.getHeight(), minigunnerPixMap.getFormat());
+        int newX = 0;
+        int newY = 0;
+        int srcX = 10;
+        int srcY = 0;
+        int srcWidth = 30;
+        int srcHeigth = minigunnerPixMap.getHeight();
+        newPixmap.drawPixmap(minigunnerPixMap, 0,0, srcX, srcY, srcWidth, srcHeigth );
+        return newPixmap;
+    }
+
+    private Pixmap reducify2(Pixmap minigunnerPixMap) {
+        int newX = 0;
+        int newY = 0;
+        int srcX = 15;
+        int srcY = 0;
+        int srcWidth = minigunnerPixMap.getWidth() - (2 * srcX);
+        int srcHeigth = minigunnerPixMap.getHeight();
+        Pixmap newPixmap = new Pixmap(srcWidth, minigunnerPixMap.getHeight(), minigunnerPixMap.getFormat());
+        newPixmap.drawPixmap(minigunnerPixMap, 0,0, srcX, srcY, srcWidth, srcHeigth );
+        return newPixmap;
+    }
+
+    private Pixmap reducify2a(Pixmap minigunnerPixMap) {
+        int newX = 0;
+        int newY = 0;
+        int srcX = 17;
+        int srcY = 0;
+        int srcWidth = minigunnerPixMap.getWidth() - (2 * srcX);
+        int srcHeight = minigunnerPixMap.getHeight() - (2 * srcY);
+        Pixmap newPixmap = new Pixmap(srcWidth, srcHeight, minigunnerPixMap.getFormat());
+        newPixmap.drawPixmap(minigunnerPixMap, 0,0, srcX, srcY, srcWidth, srcHeight );
+        return newPixmap;
+    }
+
+    private Pixmap reducify5(Pixmap minigunnerPixMap) {
+        int newX = 0;
+        int newY = 0;
+        int srcX = 17;
+        int srcY = 9;
+        int srcWidth = minigunnerPixMap.getWidth() - (2 * srcX);
+        int srcHeight = minigunnerPixMap.getHeight() - (2 * srcY);
+        Pixmap newPixmap = new Pixmap(srcWidth, srcHeight, minigunnerPixMap.getFormat());
+        newPixmap.drawPixmap(minigunnerPixMap, newX, newY, srcX, srcY, srcWidth, srcHeight );
+        return newPixmap;
+    }
+
+
+
+    private Pixmap reducify3(Pixmap minigunnerPixMap) {
+        int newX = 0;
+        int newY = 0;
+        int srcX = 20;
+        int srcY = 0;
+        int srcWidth = 10;
+        int srcHeight = minigunnerPixMap.getHeight();
+        Pixmap newPixmap = new Pixmap(srcWidth, srcHeight, minigunnerPixMap.getFormat());
+        newPixmap.drawPixmap(minigunnerPixMap, 0,0, srcX, srcY, srcWidth, srcHeight );
+        return newPixmap;
+    }
+
+
+    private Pixmap reducify4(Pixmap minigunnerPixMap) {
+        int newX = 0;
+        int newY = 0;
+        int srcX = 20;
+        int srcY = 10;
+        int srcWidth = 10;
+        int srcHeight = 39 - 10 - 10;
+        Pixmap newPixmap = new Pixmap(srcWidth, srcHeight, minigunnerPixMap.getFormat());
+        newPixmap.drawPixmap(minigunnerPixMap, 0,0, srcX, srcY, srcWidth, srcHeight );
+        return newPixmap;
+    }
+
 
     public float getX() {
         return minigunnerSprite.getX();
@@ -103,26 +180,44 @@ public class Minigunner extends GameObject {
 
     public void draw(ShapeRenderer shapeRenderer) {
 
-        shapeRenderer.setColor(1, 1, 1, 1);
+//        shapeRenderer.setColor(1, 1, 1, 1);
+        shapeRenderer.setColor(1,0,0,1);
 
         float originalScaleX = minigunnerSprite.getScaleX();
         float originalScaleY = minigunnerSprite.getScaleY();
-        minigunnerSprite.setScale(2.0f, 2.0f);
+        minigunnerSprite.setScale(4.0f, 4.0f);
         Rectangle boundingRectangle = this.minigunnerSprite.getBoundingRectangle();
         float bx = boundingRectangle.getX();
         float by = boundingRectangle.getY();
         float bw = boundingRectangle.getWidth();
         float bh = boundingRectangle.getHeight();
         shapeRenderer.rect(boundingRectangle.getX(), boundingRectangle.getY(), boundingRectangle.getWidth(), boundingRectangle.getHeight());
-        minigunnerSprite.setScale(originalScaleX,originalScaleY);
+//        minigunnerSprite.setScale(originalScaleX,originalScaleY);
 
 
         float originX = minigunnerSprite.getOriginX();
         float originY = minigunnerSprite.getOriginY();
-        shapeRenderer.circle(originX + minigunnerSprite.getX(), originY + minigunnerSprite.getY(), 5);
-    //        shapeRenderer.line(bx, by, bx + bw, by + bh);
-    //        shapeRenderer.line(bx, by + bh, bx + bw, by);
+        float absoluteOriginX = minigunnerSprite.getX() + originX;
+        float absoluteOriginY = minigunnerSprite.getY() + originY;
+        float x = minigunnerSprite.getX();
+        float y = minigunnerSprite.getY();
+//        shapeRenderer.line(originX - 10, originY, originX + 10, originY);
+        shapeRenderer.point(minigunnerSprite.getX() + originX, minigunnerSprite.getY() + originY, 0.0f);
+//        shapeRenderer.circle(originX + minigunnerSprite.getX(), originY + minigunnerSprite.getY(), 1);
+//            shapeRenderer.line(bx, by, bx + bw, by + bh);
+//            shapeRenderer.line(bx, by + bh, bx + bw, by);
 
     }
+
+    public void drawOrigin(ShapeRenderer shapeRenderer) {
+
+        shapeRenderer.setColor(1,0,0,1);
+        float originX = minigunnerSprite.getOriginX();
+        float originY = minigunnerSprite.getOriginY();
+
+        shapeRenderer.point(originX,originY, 1);
+
+    }
+
 
 }

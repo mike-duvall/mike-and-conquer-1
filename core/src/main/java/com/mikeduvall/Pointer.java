@@ -91,6 +91,8 @@ public class Pointer extends GameObject {
                 screenHeight - Gdx.input.getY() - (collisionBoxMultiplier*2),
                 collisionBoxMultiplier * 4,
                 collisionBoxMultiplier * 4 );
+
+        shapeRenderer.circle(Gdx.input.getX(), screenHeight - Gdx.input.getY(), 5);
     }
 
 
