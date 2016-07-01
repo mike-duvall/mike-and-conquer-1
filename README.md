@@ -21,4 +21,5 @@ My attempt at building a clone of the Original 1995 Command and Conquer
 
 
 ###Intellij Notes
-To run in IntelliJ, run the DesktopLauncher class.  You will have to set the working directory to: xxx/core/assets
+* To open and work with in IntelliJ, import the build.gradle file
+* To run in IntelliJ, run the DesktopLauncher class.  You will have to set the working directory to: xxx/core/assets
